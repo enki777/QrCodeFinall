@@ -123,11 +123,13 @@ const DonneesScreen = ({ navigation }) => {
           padding: 10,
           borderRadius: 220,
           justifyContent: "space-between",
+          alignItems: "center",
         }}
       >
         <TextInput
           placeholder="votre recherche par emplacement Ex: Eee"
           onChangeText={(e) => handleSearchTyping(e)}
+          clearButtonMode="always"
         />
         <TouchableOpacity onPress={handleSearchPress}>
           <Entypo
