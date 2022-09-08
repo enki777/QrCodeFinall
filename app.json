@@ -4,32 +4,30 @@
     "slug": "QrcodeFinal",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/WoodLand.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/WoodLand.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#341565"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.enki777.QrcodeFinal"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/WoodLand.png",
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.enki777.QrcodeFinal"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/WoodLand.png"
     }
   }
 }

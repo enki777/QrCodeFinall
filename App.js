@@ -10,15 +10,20 @@ import RegisterScreen from "./screens/RegisterScreen";
 import Homescreen from "./screens/HomeScreen";
 import { Entypo, MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import DonneesScreen from "./screens/DonneesScreen";
-import ParametresScreen from "./screens/ParametresScreen";
-import CreateCodeScreen from "./screens/CreateCodeScreen";
+import ParametresScreen from "./screens/Parametres/ParametresScreen";
+import CreateCodeScreen from "./screens/AdminScreens/CreateCodeScreen";
 import ReadCodeScreen from "./screens/ReadCodeScreen";
 import EachCodeScreen from "./screens/EachCodeSreen";
 import AllUsersScreen from "./screens/AllUsersScreen";
-import ReclamationsScreen from "./screens/UserScreens/ReclamationsScreen";
+import ReclamationsScreen from "./screens/UserScreens/reclamations/ReclamationsScreen";
 import { getAuth, signOut } from "firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import SeeUsersScreen from "./screens/AdminScreens/SeeUsersScreen";
+import UpdateQrScreen from "./screens/AdminScreens/UpdateQrScreen";
+import MyInfoScreen from "./screens/Parametres/MyInfoScreen";
+import ChaqueReclamScreen from "./screens/UserScreens/ChaqueReclamScreen";
+import CreateReclamationScreen from "./screens/UserScreens/reclamations/CreateReclamationScreen";
+import AdminSeeReclamationScreen from "./screens/AdminScreens/SeeReclamationScreen";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -47,12 +52,12 @@ function MyTabs({ navigation }) {
     >
       <Tab.Screen
         name="Accueil"
-        title="Accueil"
+        // title="Accueil"
         component={Homescreen}
         options={{
-          // headerShown: false,
+          headerShown: true,
           headerStyle: {
-            backgroundColor: "white", //#1DA1F2
+            backgroundColor: "white", //#1DA1F2 //rgba(56, 0, 72, 1)
           },
           headerTitleStyle: {
             color: "black",
@@ -163,7 +168,7 @@ const App = ({ navigation }) => {
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName="Login"
-        screenOptions={globalScreenOptions}
+        // screenOptions={globalScreenOptions}
       >
         <Stack.Screen
           name="Root"
@@ -172,7 +177,7 @@ const App = ({ navigation }) => {
         />
         <Stack.Screen
           name="Login"
-          options={{ title: "Se connecter" }}
+          options={{ title: "Se connecter", headerShown: false }}
           component={LoginScreen}
         />
         <Stack.Screen
@@ -180,7 +185,12 @@ const App = ({ navigation }) => {
           title="S'inscrire"
           component={RegisterScreen}
         />
-        <Stack.Screen name="home" title="Accueil" component={Homescreen} />
+        <Stack.Screen
+          name="home"
+          // title="Accueil"
+          component={Homescreen}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name="CreateCode"
           options={{ title: "Creer un emplacement" }}
@@ -203,13 +213,38 @@ const App = ({ navigation }) => {
         />
         <Stack.Screen
           name="Reclamations"
-          options={{ title: "Rédigez votre réclamation" }}
+          options={{ title: "Ecran des réclamations" }}
           component={ReclamationsScreen}
         />
         <Stack.Screen
           name="VoirUtilisateurs"
           options={{ title: "Tous les utilisateurs" }}
           component={SeeUsersScreen}
+        />
+        <Stack.Screen
+          name="ModifierQrCodes"
+          options={{ title: "Update Qr Code" }}
+          component={UpdateQrScreen}
+        />
+        <Stack.Screen
+          name="MesInfos"
+          options={{ title: "Informations personnelles" }}
+          component={MyInfoScreen}
+        />
+        <Stack.Screen
+          name="ChaqueReclam"
+          options={{ title: "Infos Réclamation" }}
+          component={ChaqueReclamScreen}
+        />
+        <Stack.Screen
+          name="CreerReclam"
+          options={{ title: "Creez une Réclamation" }}
+          component={CreateReclamationScreen}
+        />
+        <Stack.Screen
+          name="AdminVoirReclam"
+          options={{ title: "Toutes les réclamations" }}
+          component={AdminSeeReclamationScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

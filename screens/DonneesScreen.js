@@ -7,16 +7,21 @@ import {
   StyleSheet,
   Button,
   RefreshControl,
+  TextInput,
+  TouchableOpacity,
+  Alert,
 } from "react-native";
 import { db } from "../firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Entypo } from "@expo/vector-icons";
 
 const DonneesScreen = ({ navigation }) => {
   const [message, setMessage] = useState(null);
   const [codes, setCodes] = useState({});
   const [refreshing, setRefreshing] = useState(false);
   const [isAdmin, setIsAdminTest] = useState(false);
+  const [searchText, setSearchText] = useState("");
 
   useLayoutEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
@@ -26,15 +31,7 @@ const DonneesScreen = ({ navigation }) => {
 
       getData("isAdmin").then((res) => {
         console.log(res);
-        if (res == null) {
-          // console.log("c'est vrai");
-          setIsAdminTest(false);
-          console.log(isAdmin);
-        } else if (res.isAdmin != true) {
-          setIsAdminTest(false);
-        } else if (res.isAdmin == true) {
-          setIsAdminTest(true);
-        }
+        setIsAdminTest(res);
       });
     });
     return unsubscribe;
@@ -53,6 +50,7 @@ const DonneesScreen = ({ navigation }) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
   };
 
+  ///////// FONCTION GETCODES
   async function getCodes() {
     const querySnapshot = await getDocs(collection(db, "QrCode"));
     const cityList = querySnapshot.docs.map((doc) => ({
@@ -76,8 +74,74 @@ const DonneesScreen = ({ navigation }) => {
     navigation.navigate("Reclamations");
   };
 
+  const handleSearchPress = async () => {
+    if (searchText == "") {
+      console.log("vide");
+      return Alert.alert("Veuillez saisir l'emplacement");
+    }
+    let test = [];
+    const q = query(
+      collection(db, "QrCode"),
+      where("emplacement", "==", searchText)
+    );
+    const querySnapshot = await getDocs(q);
+
+    querySnapshot.forEach((doc) => {
+      test.push({ id: doc.id, data: doc.data() });
+    });
+    console.log(test);
+    setCodes(test);
+  };
+
+  const handleSearchTyping = async (data) => {
+    setSearchText(data);
+    if (data == "") {
+      console.log("c'est vide");
+      let codes = await getCodes();
+      console.log(codes);
+      return setCodes(codes);
+    }
+    console.log(data);
+    let test = [];
+    const q = query(collection(db, "QrCode"), where("emplacement", "==", data));
+    const querySnapshot = await getDocs(q);
+
+    querySnapshot.forEach((doc) => {
+      test.push({ id: doc.id, data: doc.data() });
+    });
+    console.log(test);
+    setCodes(test);
+  };
+
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1 }}>
+      <View
+        style={{
+          flexDirection: "row",
+          margin: 10,
+          backgroundColor: "white",
+          padding: 10,
+          borderRadius: 220,
+          justifyContent: "space-between",
+        }}
+      >
+        <TextInput
+          placeholder="votre recherche par emplacement Ex: Eee"
+          onChangeText={(e) => handleSearchTyping(e)}
+        />
+        <TouchableOpacity onPress={handleSearchPress}>
+          <Entypo
+            name="magnifying-glass"
+            size={40}
+            color="purple"
+
+            // style={{ padding: 10, backgroundColor: "white" }}
+          />
+        </TouchableOpacity>
+      </View>
+      <View style={{ marginLeft: 20, marginBottom: 20 }}>
+        <Text>*Swiper vers le bas pour réinitialiser la recherche.</Text>
+      </View>
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -103,21 +167,40 @@ const DonneesScreen = ({ navigation }) => {
                         });
                       }}
                     />
-                    {isAdmin ? (
-                      <Button
-                        title="Modifier le Qr Code"
-                        color="purple"
-                        onPress={() => {
-                          // navigation.navigate("EachCode", {
-                          //   qrCode: codes[key]["id"],
-                          // });
-                        }}
-                      />
+                    {isAdmin == true ? (
+                      <View>
+                        <View style={{ marginTop: 5 }}>
+                          <Button
+                            title="Modifier le Qr Code"
+                            color="purple"
+                            onPress={() => {
+                              navigation.navigate("ModifierQrCodes", {
+                                qrCode: codes[key]["id"],
+                              });
+                            }}
+                          />
+                        </View>
+                        <View style={{ marginTop: 5 }}>
+                          <Button
+                            title="Voir Reclamations"
+                            color="purple"
+                            onPress={() => {
+                              navigation.navigate("Reclamations", {
+                                qrCode: codes[key]["id"],
+                              });
+                            }}
+                          />
+                        </View>
+                      </View>
                     ) : (
                       <Button
                         title="Effectuer une réclamation"
                         color="purple"
-                        onPress={HandleReclamation}
+                        onPress={() => {
+                          navigation.navigate("Reclamations", {
+                            qrCode: codes[key]["id"],
+                          });
+                        }}
                       />
                     )}
                   </View>

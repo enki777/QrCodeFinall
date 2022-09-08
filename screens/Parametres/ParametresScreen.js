@@ -4,20 +4,17 @@ import { getAuth, signOut } from "firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ParametresScreen = ({ navigation }) => {
-  const [isAdmin, setIsAdminTest] = useState(false);
+  const [isAdmin, setIsAdminHook] = useState(false);
 
   useEffect(() => {
-    getIsAdminStatus().then((res) => {
-      console.log(res);
-      if (res == null) {
-        setIsAdminTest(false);
-        console.log(isAdmin);
-      } else if (res.isAdmin != true) {
-        setIsAdminTest(false);
-      } else if (res.isAdmin == true) {
-        setIsAdminTest(true);
-      }
+    const unsubscribe = navigation.addListener("focus", () => {
+      getIsAdminStatus().then((res) => {
+        console.log(res);
+        setIsAdminHook(res);
+      });
     });
+
+    return unsubscribe;
   }, [navigation]);
 
   function adminPannel() {
@@ -44,6 +41,7 @@ const ParametresScreen = ({ navigation }) => {
   const removeAdminStatus = async () => {
     try {
       await AsyncStorage.removeItem("isAdmin");
+      console.log("adminStorage detruit");
     } catch (e) {
       // remove error
     }
@@ -82,9 +80,9 @@ const ParametresScreen = ({ navigation }) => {
     navigation.navigate("VoirUtilisateurs");
   };
   return (
-    <View style={{ backgroundColor: "rgba(56, 0, 72, 1)", flex: 1 }}>
+    <View style={{ backgroundColor: "lightgrey", flex: 1 }}>
       <View style={{ margin: 20, backgroundColor: "white", borderRadius: 5 }}>
-        {isAdmin ? (
+        {isAdmin == true ? (
           <Text style={{ color: "purple", fontSize: 20, margin: 20 }}>
             Espace Administrateur
           </Text>
@@ -98,12 +96,14 @@ const ParametresScreen = ({ navigation }) => {
             <Button
               title="Mes informations"
               color=""
-              onPress={DisconnectHandler}
+              onPress={() => {
+                navigation.navigate("MesInfos");
+              }}
             />
           </View>
         )}
 
-        {isAdmin ? adminPannel() : null}
+        {isAdmin == true ? adminPannel() : null}
       </View>
       <View
         style={{

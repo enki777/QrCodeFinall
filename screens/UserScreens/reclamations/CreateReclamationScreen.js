@@ -1,8 +1,7 @@
-import React, { useState, useLayoutEffect, useEffect } from "react";
 import { View, Text, StyleSheet, TextInput, Button } from "react-native";
-import { db, collection, doc, setDoc, addDoc } from "../firebase";
+import { useEffect, useState } from "react";
 
-const CreateCodeScreen = ({ navigation, route }) => {
+const CreateReclamationScreen = ({ navigation }) => {
   useEffect(() => {
     navigation.setOptions({
       // headerStyle: { backgroundColor: "lightgrey" },
@@ -19,9 +18,9 @@ const CreateCodeScreen = ({ navigation, route }) => {
   const CreatePosteAttempt = async () => {
     try {
       const docRef = await addDoc(collection(db, "QrCode"), {
-        codeEcan: codeEcran,
-        codeEcan2: codeEcran2,
         emplacement: emplacement,
+        codeEcran: codeEcran,
+        codeEcran2: codeEcran2,
       });
 
       alert(`Document written with ID: ${docRef.id}`);
@@ -32,6 +31,14 @@ const CreateCodeScreen = ({ navigation, route }) => {
   };
   return (
     <View style={styles.container}>
+      <TextInput
+        style={styles.input}
+        value={emplacement}
+        onChangeText={(e) => setEmplacement(e)}
+        placeholder="Saisissez l'emplacement"
+        placeholderTextColor="black"
+      />
+
       <TextInput
         style={styles.input}
         onChangeText={(e) => setCodeEcran(e)}
@@ -48,17 +55,9 @@ const CreateCodeScreen = ({ navigation, route }) => {
         placeholderTextColor="black"
       />
 
-      <TextInput
-        style={styles.input}
-        value={emplacement}
-        onChangeText={(e) => setEmplacement(e)}
-        placeholder="Saisissez l'emplacement"
-        placeholderTextColor="black"
-      />
-
       <View style={styles.submitButton}>
         <Button
-          title="Générer le QR code"
+          title="Envoyer la Réclamation"
           onPress={CreatePosteAttempt}
           color="purple"
         />
@@ -93,4 +92,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreateCodeScreen;
+export default CreateReclamationScreen;

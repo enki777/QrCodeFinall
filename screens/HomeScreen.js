@@ -1,19 +1,28 @@
 import React, { useLayoutEffect, useEffect, useState, useRef } from "react";
-import { View, Text, Animated, StyleSheet, Button } from "react-native";
+import {
+  View,
+  Text,
+  Animated,
+  StyleSheet,
+  Button,
+  TouchableOpacity,
+} from "react-native";
 import { auth } from "../firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StatusBar } from "expo-status-bar";
+import { Entypo } from "@expo/vector-icons";
 
 const Homescreen = ({ route, navigation }) => {
   const [userName, setUserName] = useState("");
-  const [isAdmin, setIsAdmin] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
   const fadeAnim = useRef(new Animated.Value(0)).current;
+  const pulseAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     setUserName(auth.currentUser.displayName);
-    navigation.setOptions({
-      headerTitle: "Accueil",
-    });
+    // navigation.setOptions({
+    //   // headerTitle: "Accueil",
+    // });
     Animated.timing(fadeAnim, {
       toValue: 1,
       duration: 1000,
@@ -22,6 +31,7 @@ const Homescreen = ({ route, navigation }) => {
 
     getData("isAdmin").then((res) => {
       console.log(res);
+      setIsAdmin(res);
     });
   }, [navigation]);
 
@@ -67,7 +77,7 @@ const Homescreen = ({ route, navigation }) => {
         </Animated.Text>
       </View>
       <View style={styles.buttonsContainer}>
-        {isAdmin && (
+        {isAdmin == true && (
           <View style={styles.buttons}>
             <Button
               onPress={addButtonHandler}
@@ -77,14 +87,29 @@ const Homescreen = ({ route, navigation }) => {
             />
           </View>
         )}
-        <View style={styles.buttons}>
-          <Button
+        <TouchableOpacity
+          style={{ alignItems: "center" }}
+          onPress={readButtonHandler}
+        >
+          <Entypo name="camera" size={100} color="purple" />
+          <Text
+            style={{
+              color: "white",
+              fontSize: 17,
+              backgroundColor: "purple",
+              padding: 10,
+              borderRadius: 30,
+            }}
+          >
+            Lire un emplacement
+          </Text>
+          {/* <Button
             onPress={readButtonHandler}
             title="Afficher le detail d'un emplacement"
             color="#841584"
             // accessibilityLabel="Learn more about this purple button"
-          />
-        </View>
+          /> */}
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -94,7 +119,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    backgroundColor: "rgba(56, 0, 72, 1)",
+    backgroundColor: "lightgrey",
   },
   addButton: {
     margin: 30,

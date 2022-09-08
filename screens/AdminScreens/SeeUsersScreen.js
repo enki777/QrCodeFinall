@@ -1,19 +1,12 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import { View, Text } from "react-native";
-import { getAuth } from "firebase/auth";
+import { db } from "../../firebase";
+import { getAuth, getUsers } from "firebase/auth";
+import { doc, getDocs, collection, query, where } from "firebase/firestore";
 const SeeUsersScreen = ({ navigation }) => {
-  const test = () => {
-    const auth = getAuth();
-    auth.getUsers().then((res) => {
-      console.log(res);
-    });
-  };
   useEffect(() => {
-    console.log("salut");
-    test();
-    // const unsubscribe = navigation.addListener("focus", () => {
-    // });
-    // return unsubscribe;
+    const UserRole = collection(db, "Authentication");
+    console.log(UserRole);
   }, [navigation]);
 
   return (

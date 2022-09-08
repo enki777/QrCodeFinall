@@ -29,24 +29,27 @@ const LoginScreen = ({ navigation }) => {
 
   const signIn = async () => {
     const auth = getAuth();
-    signInWithEmailAndPassword(auth, email, mdp)
+    signInWithEmailAndPassword(auth, email.trim(), mdp)
       .then(async (userCredential) => {
         const user = userCredential.user;
-        const citiesRef = collection(db, "UserRole");
+        const UserRole = collection(db, "UserRole");
 
-        const q = query(citiesRef, where("userId", "==", `${user.uid}`));
+        const q = query(UserRole, where("userId", "==", `${user.uid}`));
+
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
           // doc.data() is never undefined for query doc snapshots
-          // console.log(doc.id, " => ", doc.data());
-          storeAdminStatus(doc.data());
+          console.log(doc.id, " => ", doc.data());
+          storeAdminStatus(doc.data().isAdmin);
         });
         navigation.replace("Root");
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        alert(errorMessage);
+        if (errorMessage != null) {
+          alert(errorMessage);
+        }
       });
   };
 
@@ -58,6 +61,7 @@ const LoginScreen = ({ navigation }) => {
           value={email}
           onChangeText={(text) => setEmail(text)}
           placeholder="Votre email"
+          autoCapitalize="none"
         />
 
         <TextInput
@@ -68,6 +72,7 @@ const LoginScreen = ({ navigation }) => {
           secureTextEntry
           type="password"
           onSubmitEditing={signIn}
+          autoCapitalize="none"
         />
       </View>
       <View style={styles.buttonContainer}>
