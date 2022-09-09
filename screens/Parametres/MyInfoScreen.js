@@ -33,7 +33,7 @@ const MyInfoScreen = () => {
       style={{
         flex: 1,
         alignItems: "center",
-        backgroundColor: "rgba(56, 0, 72, 1)",
+        backgroundColor: "rgba(29, 46, 54, 1)",
       }}
     >
       <View

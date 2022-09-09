@@ -62,6 +62,7 @@ const LoginScreen = ({ navigation }) => {
           onChangeText={(text) => setEmail(text)}
           placeholder="Votre email"
           autoCapitalize="none"
+          placeholderTextColor="lightgrey"
         />
 
         <TextInput
@@ -73,6 +74,7 @@ const LoginScreen = ({ navigation }) => {
           type="password"
           onSubmitEditing={signIn}
           autoCapitalize="none"
+          placeholderTextColor="lightgrey"
         />
       </View>
       <View style={styles.buttonContainer}>
@@ -80,13 +82,13 @@ const LoginScreen = ({ navigation }) => {
           style={styles.button}
           title="Se connecter"
           onPress={signIn}
-          color="#2c6BED"
+          color="orange"
         />
       </View>
       <View style={styles.buttonContainer}>
         <Button
           style={styles.button2}
-          color="#2c6BED"
+          color="purple"
           title="S'inscrire"
           onPress={() => navigation.navigate("register")}
         />
@@ -98,7 +100,7 @@ const LoginScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: "blue",
+    backgroundColor: "rgba(29, 46, 54, 1)",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -111,15 +113,13 @@ const styles = StyleSheet.create({
     height: 40,
     margin: 12,
     borderBottomWidth: 1,
+    borderColor: "orange",
     // padding: 10,
-    color: "black",
+    color: "white",
   },
   buttonContainer: {
     width: 200,
     margin: 10,
-  },
-  button2: {
-    color: "blue",
   },
 });
 

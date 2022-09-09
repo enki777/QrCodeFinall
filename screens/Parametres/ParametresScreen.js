@@ -80,12 +80,32 @@ const ParametresScreen = ({ navigation }) => {
     navigation.navigate("VoirUtilisateurs");
   };
   return (
-    <View style={{ backgroundColor: "lightgrey", flex: 1 }}>
-      <View style={{ margin: 20, backgroundColor: "white", borderRadius: 5 }}>
+    <View style={{ backgroundColor: "rgba(29, 46, 54, 1)", flex: 1 }}>
+      <View
+        style={{
+          margin: 20,
+          backgroundColor: "rgba(255, 255, 255, 1)",
+          borderRadius: 20,
+        }}
+      >
         {isAdmin == true ? (
-          <Text style={{ color: "purple", fontSize: 20, margin: 20 }}>
-            Espace Administrateur
-          </Text>
+          <View
+            style={{
+              borderTopLeftRadius: 20,
+              borderTopRightRadius: 20,
+              padding: 20,
+              backgroundColor: "rgba(42, 67, 79, 1)",
+            }}
+          >
+            <Text
+              style={{
+                color: "orange",
+                fontSize: 20,
+              }}
+            >
+              Espace Administrateur
+            </Text>
+          </View>
         ) : (
           <View>
             <View>

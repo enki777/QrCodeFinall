@@ -99,21 +99,21 @@ const UpdateQrScreen = ({ navigation, route }) => {
     // <SafeAreaView>
     <ScrollView
       style={{
-        margin: 30,
+        padding: 30,
         flex: 1,
-        // backgroundColor: "red",
+        backgroundColor: "rgba(29, 46, 54, 1)",
         // alignItems: "center",
       }}
     >
       <View
         style={{
           borderWidth: 2,
-          borderColor: "purple",
+          borderColor: "orange",
           borderRadius: 4,
           padding: 12,
         }}
       >
-        <Text>Informations du poste : {qrId}</Text>
+        <Text style={{ color: "white" }}>Informations du poste : {qrId}</Text>
         <View
           style={{
             flexDirection: "row",
@@ -121,11 +121,12 @@ const UpdateQrScreen = ({ navigation, route }) => {
             marginTop: 10,
           }}
         >
-          <Text style={{ width: "50%", color: "purple" }}>emplacement : </Text>
+          <Text style={{ width: "50%", color: "white" }}>emplacement : </Text>
           <TextInput
-            style={{ width: "50%" }}
+            style={{ width: "50%", color: "white" }}
             onChangeText={(e) => setEmplacement(e)}
             placeholder={qrData.emplacement}
+            placeholderTextColor="rgba(110, 60, 7, 1)"
           />
         </View>
         <View
@@ -135,11 +136,12 @@ const UpdateQrScreen = ({ navigation, route }) => {
             marginTop: 10,
           }}
         >
-          <Text style={{ width: "50%", color: "purple" }}>codeEcran : </Text>
+          <Text style={{ width: "50%", color: "white" }}>codeEcran : </Text>
           <TextInput
-            style={{ width: "50%" }}
+            style={{ width: "50%", color: "white" }}
             onChangeText={(e) => setCodeEcran(e)}
             placeholder={qrData.codeEcran}
+            placeholderTextColor="rgba(110, 60, 7, 1)"
           />
         </View>
         <View
@@ -149,15 +151,16 @@ const UpdateQrScreen = ({ navigation, route }) => {
             marginTop: 10,
           }}
         >
-          <Text style={{ width: "50%", color: "purple" }}>codeEcran2 : </Text>
+          <Text style={{ width: "50%", color: "white" }}>codeEcran2 : </Text>
           <TextInput
-            style={{ width: "50%" }}
+            style={{ width: "50%", color: "white" }}
             onChangeText={(e) => setCodeEcran2(e)}
             placeholder={qrData.codeEcran2}
+            placeholderTextColor="rgba(110, 60, 7, 1)"
           />
         </View>
       </View>
-      <Text>
+      <Text style={{ color: "lightgrey", marginTop: 5 }}>
         * Effacez un champ pour retrouver sa valeur avant modification.
       </Text>
 

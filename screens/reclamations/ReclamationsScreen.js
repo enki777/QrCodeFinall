@@ -1,6 +1,6 @@
 import { useLayoutEffect, useEffect, useState } from "react";
 import { View, Text, ScrollView, TouchableOpacity } from "react-native";
-import { db } from "../../../firebase";
+import { db } from "../../firebase";
 import { collection, doc, query, where, getDocs } from "firebase/firestore";
 import { AntDesign } from "@expo/vector-icons";
 
@@ -42,7 +42,7 @@ const ReclamationsScreen = ({ navigation, route }) => {
   return (
     <View
       style={{
-        backgroundColor: "rgba(56, 0, 72, 1)",
+        backgroundColor: "rgba(29, 46, 54, 1)",
         flex: 1,
         alignItems: "center",
       }}
@@ -104,12 +104,12 @@ const ReclamationsScreen = ({ navigation, route }) => {
             navigation.navigate("CreerReclam");
           }}
         >
-          <AntDesign name="pluscircle" size={60} color="white" />
+          <AntDesign name="pluscircle" size={60} color="purple" />
         </TouchableOpacity>
         <View
           style={{
             // flex: 1,
-            backgroundColor: "white",
+            // backgroundColor: "white",
             paddingLeft: 5,
             paddingRight: 5,
             borderRadius: 5,
@@ -118,7 +118,7 @@ const ReclamationsScreen = ({ navigation, route }) => {
             justifyContent: "center",
           }}
         >
-          <Text>nb de réclamations: {count}</Text>
+          <Text style={{ color: "orange" }}>nb de réclamations: {count}</Text>
         </View>
       </View>
       <View style={{ flex: 1 }}>{/* <Text>salut</Text> */}</View>

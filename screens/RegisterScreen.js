@@ -62,6 +62,7 @@ const RegisterScreen = ({ navigation }) => {
           value={name}
           onChangeText={(text) => setName(text)}
           placeholder="Votre Nom"
+          placeholderTextColor="lightgrey"
         />
 
         <TextInput
@@ -70,6 +71,7 @@ const RegisterScreen = ({ navigation }) => {
           value={email}
           onChangeText={(text) => setEmail(text)}
           placeholder="Votre Email"
+          placeholderTextColor="lightgrey"
         />
 
         <TextInput
@@ -81,6 +83,7 @@ const RegisterScreen = ({ navigation }) => {
           value={mdp}
           onChangeText={(text) => setMdp(text)}
           onSubmitEditing={register}
+          placeholderTextColor="lightgrey"
         />
       </View>
 
@@ -90,6 +93,7 @@ const RegisterScreen = ({ navigation }) => {
           style={styles.button}
           title="S'inscrire"
           onPress={register}
+          color="purple"
         />
       </View>
     </View>
@@ -99,7 +103,7 @@ const RegisterScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: "blue",
+    backgroundColor: "rgba(29, 46, 54, 1)",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -111,6 +115,8 @@ const styles = StyleSheet.create({
     height: 40,
     margin: 12,
     borderBottomWidth: 1,
+    borderColor: "orange",
+    color: "white",
     // padding: 10,
   },
   buttonContainer: {

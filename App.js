@@ -15,39 +15,38 @@ import CreateCodeScreen from "./screens/AdminScreens/CreateCodeScreen";
 import ReadCodeScreen from "./screens/ReadCodeScreen";
 import EachCodeScreen from "./screens/EachCodeSreen";
 import AllUsersScreen from "./screens/AllUsersScreen";
-import ReclamationsScreen from "./screens/UserScreens/reclamations/ReclamationsScreen";
+import ReclamationsScreen from "./screens/reclamations/ReclamationsScreen";
 import { getAuth, signOut } from "firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import SeeUsersScreen from "./screens/AdminScreens/SeeUsersScreen";
 import UpdateQrScreen from "./screens/AdminScreens/UpdateQrScreen";
 import MyInfoScreen from "./screens/Parametres/MyInfoScreen";
 import ChaqueReclamScreen from "./screens/UserScreens/ChaqueReclamScreen";
-import CreateReclamationScreen from "./screens/UserScreens/reclamations/CreateReclamationScreen";
+import CreateReclamationScreen from "./screens/reclamations/CreateReclamationScreen";
 import AdminSeeReclamationScreen from "./screens/AdminScreens/SeeReclamationScreen";
+import { DefaultTheme, DarkTheme } from "@react-navigation/native";
+import { Button } from "react-native";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
-
-const globalScreenOptions = {
-  headerStyle: { backgroundColor: "white" },
-  headerTitleStyle: {
-    color: "black",
-  },
-  headerTitleAlign: "center",
-  headerTintColor: "black",
-};
 
 function MyTabs({ navigation }) {
   return (
     <Tab.Navigator
       screenOptions={{
+        // headerBackTitleVisible: true,
+
+        headerTitleAlign: "center",
+        headerTitleStyle: "orange",
+        headerStyle: {
+          backgroundColor: "rgba(20, 32, 37, 1)",
+        },
         activeTintColor: "purple",
         inactiveTintColor: "black",
         tabBarStyle: {
-          backgroundColor: "white",
+          backgroundColor: "rgba(20, 32, 37, 1)",
+          // borderColor: "red",
         },
-        headerTitleAlign: "center",
-        // backgroundColor: "red",
       }}
     >
       <Tab.Screen
@@ -55,23 +54,36 @@ function MyTabs({ navigation }) {
         // title="Accueil"
         component={Homescreen}
         options={{
-          headerShown: true,
-          headerStyle: {
-            backgroundColor: "white", //#1DA1F2 //rgba(56, 0, 72, 1)
-          },
           headerTitleStyle: {
-            color: "black",
+            color: "orange",
           },
           tabBarIcon: ({ size, color, focused, tintColor }) => (
             <Entypo
               name={"home"}
               size={size}
-              color={focused ? "purple" : color}
+              color={focused ? "purple" : "orange"}
               // color={"black"}
             />
           ),
           tabBarActiveTintColor: "purple",
-          tabBarInactiveTintColor: "black",
+          tabBarInactiveTintColor: "white",
+          headerRight: () => (
+            <View
+              style={{
+                backgroundColor: "rgba(29, 46, 54, 1)",
+                marginRight: 20,
+                fontSize: 10,
+                borderRadius: 15,
+              }}
+            >
+              <Button
+                // onPress={() => console.log(auth.currentUser.displayName)}
+                title="nom"
+                color="orange"
+                // style={{ fontSize: 10 }}
+              />
+            </View>
+          ),
         }}
       />
       <Tab.Screen
@@ -80,37 +92,40 @@ function MyTabs({ navigation }) {
         component={DonneesScreen}
         options={{
           // headerShown: false,
-          headerStyle: {
-            backgroundColor: "white", //#1DA1F2
-          },
+          // headerStyle: {
+          //   backgroundColor: "white", //#1DA1F2
+          // },
+          headerBackTitle: "salasd",
           headerTitleStyle: {
-            color: "black",
+            color: "orange",
           },
           tabBarIcon: ({ size, color, focused, tintColor }) => (
             <MaterialCommunityIcons
               name="data-matrix"
-              color={focused ? "purple" : "black"}
+              color={focused ? "purple" : "orange"}
               size={size}
             />
           ),
           tabBarActiveTintColor: "purple",
-          tabBarInactiveTintColor: "black",
+          tabBarInactiveTintColor: "white",
         }}
       />
       <Tab.Screen
         name="Parametres"
         component={ParametresScreen}
         options={{
-          // headerShown: false,
+          headerTitleStyle: {
+            color: "orange",
+          },
           tabBarIcon: ({ focused, size }) => (
             <Ionicons
               name="settings"
-              color={focused ? "purple" : "black"}
+              color={focused ? "purple" : "orange"}
               size={size}
             />
           ),
           tabBarActiveTintColor: "purple",
-          tabBarInactiveTintColor: "black",
+          tabBarInactiveTintColor: "white",
         }}
       />
     </Tab.Navigator>
@@ -168,7 +183,14 @@ const App = ({ navigation }) => {
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName="Login"
-        // screenOptions={globalScreenOptions}
+        screenOptions={{
+          // headerBackVisible: false,
+          headerBackTitleVisible: false,
+          headerTintColor: "orange",
+          headerStyle: {
+            backgroundColor: "rgba(20, 32, 37, 1)",
+          },
+        }}
       >
         <Stack.Screen
           name="Root"

@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useEffect, useState } from "react";
+import React, { useLayoutEffect, useEffect, useState, useRef } from "react";
 import {
   View,
   Text,
@@ -15,6 +15,7 @@ import { db } from "../firebase";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Entypo } from "@expo/vector-icons";
+import QRCode from "react-native-qrcode-svg";
 
 const DonneesScreen = ({ navigation }) => {
   const [message, setMessage] = useState(null);
@@ -22,6 +23,7 @@ const DonneesScreen = ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
   const [isAdmin, setIsAdminTest] = useState(false);
   const [searchText, setSearchText] = useState("");
+  const svg = useRef();
 
   useLayoutEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
@@ -114,36 +116,62 @@ const DonneesScreen = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView
+      style={{
+        flex: 1,
+        paddingLeft: 20,
+        paddingRight: 20,
+        backgroundColor: "rgba(29, 46, 54, 1)",
+      }}
+    >
       <View
         style={{
           flexDirection: "row",
-          margin: 10,
+          // width: "100%",
           backgroundColor: "white",
-          padding: 10,
-          borderRadius: 220,
+          borderRadius: 20,
+          paddingLeft: 20,
           justifyContent: "space-between",
           alignItems: "center",
+          marginTop: 20,
+          marginLeft: 10,
+          marginRight: 10,
+          marginBottom: 10,
         }}
       >
-        <TextInput
-          placeholder="votre recherche par emplacement Ex: Eee"
-          onChangeText={(e) => handleSearchTyping(e)}
-          clearButtonMode="always"
-        />
-        <TouchableOpacity onPress={handleSearchPress}>
-          <Entypo
-            name="magnifying-glass"
-            size={40}
-            color="purple"
-
-            // style={{ padding: 10, backgroundColor: "white" }}
+        <View style={{ flex: 5 }}>
+          <TextInput
+            placeholder="Recherche par emplacement Ex: Eee"
+            onChangeText={(e) => handleSearchTyping(e)}
+            clearButtonMode="always"
           />
-        </TouchableOpacity>
+        </View>
+        <View
+          style={{
+            backgroundColor: "lightgrey",
+            flex: 1,
+            alignItems: "center",
+            borderTopRightRadius: 20,
+            borderBottomRightRadius: 20,
+            padding: 5,
+          }}
+        >
+          <TouchableOpacity onPress={handleSearchPress}>
+            <Entypo
+              name="magnifying-glass"
+              size={30}
+              color="purple"
+              // style={{ padding: 10, backgroundColor: "white" }}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
       <View style={{ marginLeft: 20, marginBottom: 20 }}>
-        <Text>*Swiper vers le bas pour réinitialiser la recherche.</Text>
+        <Text style={{ color: "white" }}>
+          *Swiper vers le bas pour réinitialiser la recherche.
+        </Text>
       </View>
+
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -154,21 +182,31 @@ const DonneesScreen = ({ navigation }) => {
               // console.log(codes[key]["data"]);
               return (
                 <View key={index} style={styles.eachCard}>
-                  <Text>Qrcode_id : {codes[key]["id"]}</Text>
+                  <QRCode
+                    value={JSON.stringify(codes[key]["data"])}
+                    size={200}
+                    getRef={(ref) => (svg.current = ref)}
+                  />
+                  <Text style={{ marginTop: 5 }}>
+                    Qrcode_id : {codes[key]["id"]}
+                  </Text>
                   {Object.keys(codes[key]["data"]).map((key2, index2) => {
                     // return (
                     //   <View key={index2} style={styles.eachCardRow}></View>
                     // );
                   })}
                   <View style={styles.actionsContainer}>
-                    <Button
-                      title="Voir Qr Code"
-                      onPress={() => {
-                        navigation.navigate("EachCode", {
-                          qrCode: codes[key]["id"],
-                        });
-                      }}
-                    />
+                    <View style={{ marginBottom: 10 }}>
+                      <Button
+                        title="Voir Qr Code"
+                        color="orange"
+                        onPress={() => {
+                          navigation.navigate("EachCode", {
+                            qrCode: codes[key]["id"],
+                          });
+                        }}
+                      />
+                    </View>
                     {isAdmin == true ? (
                       <View>
                         <View style={{ marginTop: 5 }}>
@@ -218,7 +256,7 @@ const DonneesScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "lightgrey",
+    backgroundColor: "rgba(29, 46, 54, 1)",
   },
   addButton: {
     margin: 30,
@@ -240,6 +278,8 @@ const styles = StyleSheet.create({
     padding: 20,
     margin: 10,
     borderRadius: 5,
+    alignItems: "center",
+    // width: "100%",
   },
   eachCardRow: {
     display: "flex",
@@ -253,6 +293,7 @@ const styles = StyleSheet.create({
   },
   actionsContainer: {
     marginTop: 10,
+    width: "80%",
   },
 });
 

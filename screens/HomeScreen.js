@@ -62,20 +62,7 @@ const Homescreen = ({ route, navigation }) => {
           alignItems: "center",
           justifyContent: "center",
         }}
-      >
-        <Animated.Text
-          style={{
-            opacity: fadeAnim,
-            backgroundColor: "white",
-            padding: 20,
-            borderRadius: 5,
-            fontSize: 25,
-            color: "purple",
-          }}
-        >
-          Bonjour {userName}
-        </Animated.Text>
-      </View>
+      ></View>
       <View style={styles.buttonsContainer}>
         {isAdmin == true && (
           <View style={styles.buttons}>
@@ -87,29 +74,38 @@ const Homescreen = ({ route, navigation }) => {
             />
           </View>
         )}
-        <TouchableOpacity
-          style={{ alignItems: "center" }}
-          onPress={readButtonHandler}
+        <View
+          style={{
+            // backgroundColor: "red",
+            justifyContent: "center",
+          }}
         >
-          <Entypo name="camera" size={100} color="purple" />
-          <Text
-            style={{
-              color: "white",
-              fontSize: 17,
-              backgroundColor: "purple",
-              padding: 10,
-              borderRadius: 30,
-            }}
-          >
-            Lire un emplacement
-          </Text>
-          {/* <Button
+          <TouchableOpacity
+            style={{ alignItems: "center" }}
             onPress={readButtonHandler}
-            title="Afficher le detail d'un emplacement"
-            color="#841584"
-            // accessibilityLabel="Learn more about this purple button"
-          /> */}
-        </TouchableOpacity>
+          >
+            <Entypo name="camera" size={100} color="purple" style={{}} />
+            <View
+              style={{
+                borderRadius: 30,
+                backgroundColor: "purple",
+                paddingLeft: 15,
+                paddingRight: 15,
+                paddingTop: 10,
+                paddingBottom: 10,
+              }}
+            >
+              <Text
+                style={{
+                  color: "white",
+                  fontSize: 17,
+                }}
+              >
+                Lire un emplacement
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -119,7 +115,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    backgroundColor: "lightgrey",
+    backgroundColor: "rgba(29, 46, 54, 1)",
   },
   addButton: {
     margin: 30,
@@ -143,7 +139,7 @@ const styles = StyleSheet.create({
   halfBottom: {},
   buttonsContainer: {
     flex: 1,
-    width: "100%",
+    // width: "100%",
     justifyContent: "flex-start",
     marginTop: 0,
     // backgroundColor: "blue",

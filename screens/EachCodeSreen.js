@@ -36,8 +36,17 @@ const EachCodeScreen = ({ navigation, route }) => {
   };
 
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <DisplayQrCode formData={qrCodeData} />
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: "rgba(29, 46, 54, 1)",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <View style={{ backgroundColor: "white", borderRadius: 5, padding: 10 }}>
+        <DisplayQrCode formData={qrCodeData} />
+      </View>
     </View>
   );
 };
