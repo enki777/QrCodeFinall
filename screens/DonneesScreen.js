@@ -115,6 +115,17 @@ const DonneesScreen = ({ navigation }) => {
     setCodes(test);
   };
 
+  const DisplayQrCode = ({ formData }) => {
+    // console.log("data envoyee ====== " + formData);
+    return (
+      <QRCode
+        value={JSON.stringify(formData)}
+        size={300}
+        getRef={(ref) => (svg.current = ref)}
+      />
+    );
+  };
+
   return (
     <SafeAreaView
       style={{
@@ -182,11 +193,7 @@ const DonneesScreen = ({ navigation }) => {
               // console.log(codes[key]["data"]);
               return (
                 <View key={index} style={styles.eachCard}>
-                  <QRCode
-                    value={JSON.stringify(codes[key]["data"])}
-                    size={200}
-                    getRef={(ref) => (svg.current = ref)}
-                  />
+                  <DisplayQrCode formData={codes[key]["id"]} />
                   <Text style={{ marginTop: 5 }}>
                     Qrcode_id : {codes[key]["id"]}
                   </Text>

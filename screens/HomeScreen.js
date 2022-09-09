@@ -76,7 +76,9 @@ const Homescreen = ({ route, navigation }) => {
         )}
         <View
           style={{
-            // backgroundColor: "red",
+            backgroundColor: "rgba(0, 0, 0, 0.43)",
+            borderRadius: 5,
+            padding: 20,
             justifyContent: "center",
           }}
         >
@@ -84,11 +86,11 @@ const Homescreen = ({ route, navigation }) => {
             style={{ alignItems: "center" }}
             onPress={readButtonHandler}
           >
-            <Entypo name="camera" size={100} color="purple" style={{}} />
+            <Entypo name="camera" size={100} color="orange" style={{}} />
             <View
               style={{
                 borderRadius: 30,
-                backgroundColor: "purple",
+                // backgroundColor: "purple",
                 paddingLeft: 15,
                 paddingRight: 15,
                 paddingTop: 10,
@@ -107,6 +109,7 @@ const Homescreen = ({ route, navigation }) => {
           </TouchableOpacity>
         </View>
       </View>
+      <StatusBar hidden={false} style="light" />
     </View>
   );
 };

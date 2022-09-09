@@ -53,35 +53,50 @@ const ReclamationsScreen = ({ navigation, route }) => {
           marginTop: 40,
           padding: 10,
           borderRadius: 5,
-          backgroundColor: "white",
+          backgroundColor: "rgba(0, 0, 0, 0.43)",
           width: "90%",
           // height: "20%",
         }}
       >
-        <Text style={{ fontSize: 18, textAlign: "center", marginBottom: 10 }}>
+        <Text
+          style={{
+            fontSize: 18,
+            textAlign: "center",
+            marginBottom: 10,
+            color: "orange",
+          }}
+        >
           Toutes les réclamations concernant ce Qr code :
         </Text>
-        {Object.keys(reclamations).map((key) => {
-          return (
-            <TouchableOpacity
-              style={{
-                flexDirection: "row",
-                backgroundColor: "lightgrey",
-                padding: 10,
-                width: "100%",
-                borderRadius: 5,
-                marginTop: 5,
-              }}
-              onPress={() => {
-                eachReclamation(reclamations[key].id);
-              }}
-              key={key}
-            >
-              <Text>ID: </Text>
-              <Text>{reclamations[key].id}</Text>
-            </TouchableOpacity>
-          );
-        })}
+        <View
+          style={{
+            alginItems: "center",
+            width: "80%",
+            justifyContent: "center",
+          }}
+        >
+          {Object.keys(reclamations).map((key) => {
+            return (
+              <TouchableOpacity
+                style={{
+                  flexDirection: "row",
+                  backgroundColor: "lightgrey",
+                  padding: 10,
+
+                  borderRadius: 5,
+                  margin: 10,
+                }}
+                onPress={() => {
+                  eachReclamation(reclamations[key].id);
+                }}
+                key={key}
+              >
+                <Text>Motif : </Text>
+                <Text>{reclamations[key].data.commentaire}</Text>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
       </ScrollView>
 
       <View
@@ -104,7 +119,7 @@ const ReclamationsScreen = ({ navigation, route }) => {
             navigation.navigate("CreerReclam");
           }}
         >
-          <AntDesign name="pluscircle" size={60} color="purple" />
+          <AntDesign name="pluscircle" size={40} color="purple" />
         </TouchableOpacity>
         <View
           style={{
