@@ -59,6 +59,7 @@ const DonneesScreen = ({ navigation }) => {
       data: doc.data(),
       id: doc.id,
     }));
+    console.log(cityList);
     return cityList;
   }
 
