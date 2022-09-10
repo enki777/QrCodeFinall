@@ -27,105 +27,109 @@ const DonneesScreen = ({ navigation }) => {
 
   useLayoutEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
-      getCodes().then((res) => {
-        setCodes(res);
-      });
+    //   getCodes().then((res) => {
+    //     setCodes(res);
+    //   });
 
-      getData("isAdmin").then((res) => {
-        console.log(res);
-        setIsAdminTest(res);
-      });
+    //   getData("isAdmin").then((res) => {
+    //     console.log(res);
+    //     setIsAdminTest(res);
+    //   });
     });
     return unsubscribe;
   }, [navigation]);
 
-  const getData = async (itemKey) => {
-    try {
-      const jsonValue = await AsyncStorage.getItem(itemKey);
-      return jsonValue != null ? JSON.parse(jsonValue) : null;
-    } catch (e) {
-      // error reading value
-    }
-  };
+  // const getData = async (itemKey) => {
+  //   try {
+  //     const jsonValue = await AsyncStorage.getItem(itemKey);
+  //     return jsonValue != null ? JSON.parse(jsonValue) : null;
+  //   } catch (e) {
+  //     // error reading value
+  //   }
+  // };
 
-  const wait = (timeout) => {
-    return new Promise((resolve) => setTimeout(resolve, timeout));
-  };
+  // const wait = (timeout) => {
+  //   return new Promise((resolve) => setTimeout(resolve, timeout));
+  // };
 
-  ///////// FONCTION GETCODES
-  async function getCodes() {
-    const querySnapshot = await getDocs(collection(db, "QrCode"));
-    const cityList = querySnapshot.docs.map((doc) => ({
-      data: doc.data(),
-      id: doc.id,
-    }));
-    console.log(cityList);
-    return cityList;
+  // ///////// FONCTION GETCODES
+  // async function getCodes() {
+  //   const querySnapshot = await getDocs(collection(db, "QrCode"));
+  //   const cityList = querySnapshot.docs.map((doc) => ({
+  //     data: doc.data(),
+  //     id: doc.id,
+  //   }));
+  //   console.log(cityList);
+  //   return cityList;
+  // }
+
+  // const onRefresh = React.useCallback(() => {
+  //   setRefreshing(true);
+  //   wait(1000).then(() => {
+  //     getCodes().then((res) => {
+  //       setCodes(res);
+  //       setRefreshing(false);
+  //     });
+  //   });
+  // }, []);
+
+  // const HandleReclamation = () => {
+  //   navigation.navigate("Reclamations");
+  // };
+
+  // const handleSearchPress = async () => {
+  //   if (searchText == "") {
+  //     console.log("vide");
+  //     return Alert.alert("Veuillez saisir l'emplacement");
+  //   }
+  //   let test = [];
+  //   const q = query(
+  //     collection(db, "QrCode"),
+  //     where("emplacement", "==", searchText)
+  //   );
+  //   const querySnapshot = await getDocs(q);
+
+  //   querySnapshot.forEach((doc) => {
+  //     test.push({ id: doc.id, data: doc.data() });
+  //   });
+  //   console.log(test);
+  //   setCodes(test);
+  // };
+
+  // const handleSearchTyping = async (data) => {
+  //   setSearchText(data);
+  //   if (data == "") {
+  //     console.log("c'est vide");
+  //     let codes = await getCodes();
+  //     console.log(codes);
+  //     return setCodes(codes);
+  //   }
+  //   console.log(data);
+  //   let test = [];
+  //   const q = query(collection(db, "QrCode"), where("emplacement", "==", data));
+  //   const querySnapshot = await getDocs(q);
+
+  //   querySnapshot.forEach((doc) => {
+  //     test.push({ id: doc.id, data: doc.data() });
+  //   });
+  //   console.log(test);
+  //   setCodes(test);
+  // };
+
+  // const DisplayQrCode = ({ formData }) => {
+  //   // console.log("data envoyee ====== " + formData);
+  //   return (
+  //     <QRCode
+  //       value={JSON.stringify(formData)}
+  //       size={300}
+  //       getRef={(ref) => (svg.current = ref)}
+  //     />
+  //   );
+  // };
+
+  const testDonnees = async ()=> {
+    console.log("ca taffe enfin");
   }
-
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    wait(1000).then(() => {
-      getCodes().then((res) => {
-        setCodes(res);
-        setRefreshing(false);
-      });
-    });
-  }, []);
-
-  const HandleReclamation = () => {
-    navigation.navigate("Reclamations");
-  };
-
-  const handleSearchPress = async () => {
-    if (searchText == "") {
-      console.log("vide");
-      return Alert.alert("Veuillez saisir l'emplacement");
-    }
-    let test = [];
-    const q = query(
-      collection(db, "QrCode"),
-      where("emplacement", "==", searchText)
-    );
-    const querySnapshot = await getDocs(q);
-
-    querySnapshot.forEach((doc) => {
-      test.push({ id: doc.id, data: doc.data() });
-    });
-    console.log(test);
-    setCodes(test);
-  };
-
-  const handleSearchTyping = async (data) => {
-    setSearchText(data);
-    if (data == "") {
-      console.log("c'est vide");
-      let codes = await getCodes();
-      console.log(codes);
-      return setCodes(codes);
-    }
-    console.log(data);
-    let test = [];
-    const q = query(collection(db, "QrCode"), where("emplacement", "==", data));
-    const querySnapshot = await getDocs(q);
-
-    querySnapshot.forEach((doc) => {
-      test.push({ id: doc.id, data: doc.data() });
-    });
-    console.log(test);
-    setCodes(test);
-  };
-
-  const DisplayQrCode = ({ formData }) => {
-    // console.log("data envoyee ====== " + formData);
-    return (
-      <QRCode
-        value={JSON.stringify(formData)}
-        size={300}
-        getRef={(ref) => (svg.current = ref)}
-      />
-    );
-  };
 
   return (
     <SafeAreaView
@@ -154,7 +158,7 @@ const DonneesScreen = ({ navigation }) => {
         <View style={{ flex: 5 }}>
           <TextInput
             placeholder="Recherche par emplacement Ex: Eee"
-            onChangeText={(e) => handleSearchTyping(e)}
+            // onChangeText={(e) => handleSearchTyping(e)}
             clearButtonMode="always"
           />
         </View>
@@ -168,7 +172,7 @@ const DonneesScreen = ({ navigation }) => {
             padding: 5,
           }}
         >
-          <TouchableOpacity onPress={handleSearchPress}>
+          <TouchableOpacity onPress={testDonnees}>
             <Entypo
               name="magnifying-glass"
               size={30}
@@ -184,7 +188,7 @@ const DonneesScreen = ({ navigation }) => {
         </Text>
       </View>
 
-      <ScrollView
+      {/* <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
@@ -256,7 +260,7 @@ const DonneesScreen = ({ navigation }) => {
               );
             })
           : null}
-      </ScrollView>
+      </ScrollView> */}
     </SafeAreaView>
   );
 };
