@@ -1,29 +1,34 @@
 import React, { useState, useLayoutEffect, useRef } from "react";
 import { StyleSheet, View, Button, Text } from "react-native";
-import QRCode from "react-native-qrcode-svg";
 import { doc, db, getDoc } from "../firebase";
+import QRCode from "react-native-qrcode-svg";
 
 const EachCodeScreen = ({ navigation, route }) => {
   const svg = useRef();
-  const [selectedPrinter, setSelectedPrinter] = useState();
+  // const [selectedPrinter, setSelectedPrinter] = useState();
   const [qrCodeDataId, setQrCodeDataId] = useState();
   const [qrData, setQrData] = useState({});
 
-  useLayoutEffect(() => {
+  useLayoutEffect(  () => {
     const unsubscribe = navigation.addListener("focus", () => {
-      setQrCodeDataId(route.params.qrCode);
-      getQrDoc(route.params.qrCode).then((res) => {
-        console.log(res);
+      setQrCodeDataId(route.params.qrId);
+      getQrcodeData(route.params.qrId).then((res)=> {
         setQrData(res);
+      }).catch((e)=> {
+        alert(e)
       });
     });
     return unsubscribe;
   }, [navigation]);
 
-  const getQrDoc = async (id) => {
-    const docRef = doc(db, "QrCode", id);
+  const getQrcodeData = async (test) => {
+    const docRef = doc(db, "QrCode", test);
     const snap = await getDoc(docRef);
-    return snap.data();
+    const allData = {
+      id: snap.id,
+      data: snap.data()
+    }
+    return allData;
   };
 
   const DisplayQrCode = ({ formData }) => {
@@ -70,7 +75,7 @@ const EachCodeScreen = ({ navigation, route }) => {
         <View
           style={{ padding: 10, backgroundColor: "white", borderRadius: 5 }}
         >
-          <DisplayQrCode formData={qrCodeDataId} />
+          <DisplayQrCode formData={qrData} />
         </View>
       </View>
       <View
@@ -91,7 +96,7 @@ const EachCodeScreen = ({ navigation, route }) => {
             padding: 10,
           }}
         >
-          {Object.keys(qrData).map((key, index) => {
+         {qrData.data != undefined ? (Object.keys(qrData.data).map((key, index) => {
             return (
               <View
                 key={index}
@@ -106,11 +111,13 @@ const EachCodeScreen = ({ navigation, route }) => {
                   <Text style={{ color: "white" }}>{key}</Text>
                 </View>
                 <View>
-                  <Text style={{ color: "orange" }}>{qrData[key]}</Text>
+                  <Text style={{ color: "orange" }}>{qrData.data[key]}</Text>
                 </View>
               </View>
             );
-          })}
+          })) : null}
+          
+         
         </View>
       </View>
     </View>

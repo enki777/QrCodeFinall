@@ -7,16 +7,21 @@ const ReadCodeScreen = ({ navigation }) => {
   const [scanned, setScanned] = useState(false);
 
   useEffect(() => {
-    (async () => {
+    const getBarCodeScannerPermissions = async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
-      setHasPermission(status === "granted");
-    })();
+      setHasPermission(status === 'granted');
+    };
+
+    getBarCodeScannerPermissions();
   }, []);
 
   const handleBarCodeScanned = ({ type, data }) => {
+    let formatedData = JSON.parse(data);
+    // return console.log(formatedData)
+    
     setScanned(true);
     navigation.navigate("EachCode", {
-      qrId: data,
+      qrId: formatedData.id,
     });
   };
 
@@ -29,11 +34,12 @@ const ReadCodeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <BarCodeScanner
+      type={'front'}
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         style={StyleSheet.absoluteFillObject}
       />
       {scanned && (
-        <Button title={"Tap to Scan Again"} onPress={() => setScanned(false)} />
+        <Button title={"Appuyer pour scanner de nouveau"} onPress={() => setScanned(false)} />
       )}
     </View>
   );

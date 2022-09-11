@@ -14,11 +14,13 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.enki777.QrcodeFinal",
-      "buildNumber": "4"
+      "buildNumber": "6"
     },
     "android": {
       "adaptiveIcon": {
@@ -29,6 +31,11 @@
     },
     "web": {
       "favicon": "./assets/WoodLand.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "eac35499-df00-46be-a121-189c5f8ca726"
+      }
     }
   }
 }
