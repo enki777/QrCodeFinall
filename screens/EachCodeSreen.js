@@ -6,14 +6,13 @@ import * as Print from "expo-print";
 import { shareAsync } from "expo-sharing";
 
 const EachCodeScreen = ({ navigation, route }) => {
-  const svg = useRef();
-  // const [selectedPrinter, setSelectedPrinter] = useState();
+  const svg = useRef(null);
   const [qrCodeDataId, setQrCodeDataId] = useState();
   const [qrData, setQrData] = useState({});
   const [selectedPrinter, setSelectedPrinter] = useState();
   const [test, setTest] = useState({});
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       setQrCodeDataId(route.params.qrId);
       getQrcodeData(route.params.qrId)
@@ -23,7 +22,12 @@ const EachCodeScreen = ({ navigation, route }) => {
         .catch((e) => {
           alert(e);
         });
+
+      if (svg.current == null) {
+        console.log(svg.current);
+      }
     });
+
     return unsubscribe;
   }, [navigation]);
 
@@ -54,30 +58,55 @@ const EachCodeScreen = ({ navigation, route }) => {
       //   message: "Ehi, this is my QR code",
       //   url: `data:image/png;base64,${data}`,
       // };
-      setTest(data);
-    });
-
-    Print.printAsync({
-      html: `
-      <html>
-          <body>
-            <h1>Salut</h1>
-            <div>
-            <img src="data:image/png;base64,${test}" width="400" height="400" />
-            </div>
+      // setTest(data);
+      Print.printAsync({
+        html: `
+        <html style="background-color: rgba(29, 46, 54, 1);">
+            <body>
+              <div style="display: flex; flex-direction: column; align-items: center;margin-top: 40px">
+                <div style="padding: 10px; border-radius: 10px; background-color: white ">
+                  <img src="data:image/png;base64,${data}" width="400" height="400" />
+                </div>
+                <div style="display: flex;flex-direction: row;justify-content: space-between; align-items: flex-start; background-color: rgba(0, 0, 0, 0.43); width: 80%; margin-top: 30px; padding: 10px; border-radius: 5px;">
+                  <div style="color: white;">
+                    <p>QrCode_ID : </p>
+                    <p>codeEcran</p>
+                    <p>codeEcran2</p>
+                    <p>emplacement</p>
+                  </div>
+                  <div style="color: orange;">
+                    <p>${qrData.id}</p>
+                    <p>${qrData.data.codeEcran}</p>
+                    <p>${qrData.data.codeEcran2}</p>
+                    <p>${qrData.data.emplacement}</p>
+                    
+                  </div>
+                </div>
+              <div>
             </body>
-      </html>
-      `,
-      printerUrl: selectedPrinter?.url, // iOS only
-    })
-      .then((res) => {})
-      .catch((err) => {
-        alert(err);
-      });
+        </html>
+        `,
+        orientation: "portrait",
+        printerUrl: selectedPrinter?.url,
+        // margins: {
+        //   left: 20,
+        //   top: 20,
+        //   right: 20,
+        //   bottom: 20,
+        // },
+      })
+        .then((res) => {
+          console.log("ca marche bien ! ");
+        })
+        .catch((err) => {
+          return;
+        });
+    });
   };
 
+  // IOS SEULEMENT
   const selectPrinter = async () => {
-    const printer = await Print.selectPrinterAsync(); // iOS only
+    const printer = await Print.selectPrinterAsync();
     setSelectedPrinter(printer);
   };
 

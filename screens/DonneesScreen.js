@@ -74,7 +74,7 @@ const DonneesScreen = ({ navigation }) => {
 
   const handleSearchPress = async () => {
     if (searchText == "") {
-      console.log("vide");  
+      console.log("vide");
       return Alert.alert("Veuillez saisir l'emplacement");
     }
     let test = [];
@@ -111,17 +111,15 @@ const DonneesScreen = ({ navigation }) => {
     setCodes(test);
   };
 
-  // const DisplayQrCode = ({ formData }) => {
-  //   // console.log("data envoyee ====== " + formData);
-  //   return (
-  //     <QRCode
-  //       value={JSON.stringify(formData)}
-  //       size={300}
-  //       getRef={(ref) => (svg.current = ref)}
-  //     />
-  //   );
-  // };
-
+  const DisplayQrCode = ({ formData }) => {
+    return (
+      <QRCode
+        value={JSON.stringify(formData)}
+        size={300}
+        getRef={(ref) => (svg.current = ref)}
+      />
+    );
+  };
 
   return (
     <SafeAreaView
@@ -187,23 +185,21 @@ const DonneesScreen = ({ navigation }) => {
       >
         {codes
           ? Object.keys(codes).map((key, index) => {
-              // console.log(codes[key]["data"]);
               return (
                 <View key={index} style={styles.eachCard}>
-                  {<QRCode
-        value={JSON.stringify(codes[key])}
-        size={300}
-        getRef={(ref) => (svg.current = ref)}
-      />}
+                  <DisplayQrCode formData={codes[key]} />
+                  {/* {
+                    <QRCode
+                      value={JSON.stringify(codes[key])}
+                      size={300}
+                      getRef={(ref) => (svg.current = ref)}
+                    />
+                  } */}
                   {/* <DisplayQrCode formData={codes[key]["id"]} /> */}
                   <Text style={{ marginTop: 5 }}>
                     Qrcode_id : {codes[key]["id"]}
                   </Text>
-                  {Object.keys(codes[key]["data"]).map((key2, index2) => {
-                    // return (
-                    //   <View key={index2} style={styles.eachCardRow}></View>
-                    // );
-                  })}
+
                   <View style={styles.actionsContainer}>
                     <View style={{ marginBottom: 10 }}>
                       <Button
