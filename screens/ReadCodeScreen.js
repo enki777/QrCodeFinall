@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { BarCodeScanner } from "expo-barcode-scanner";
-import { View, Text, StyleSheet, Button, Alert } from "react-native";
+import { View, Text, StyleSheet, Button, Alert, TouchableOpacity } from "react-native";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const ReadCodeScreen = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
+  const [cameraType, setCameraType] = useState('back');
 
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
@@ -25,6 +27,15 @@ const ReadCodeScreen = ({ navigation }) => {
     });
   };
 
+  const handleChangeCamera = ()=> {
+    if(cameraType == 'back'){
+      setCameraType('front')
+    }else{
+      setCameraType('back')
+    }
+    // console.log(cameraType)
+  }
+
   if (hasPermission === null) {
     return <Text>Requesting for camera permission</Text>;
   }
@@ -34,13 +45,18 @@ const ReadCodeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <BarCodeScanner
-      type={'front'}
+      type={cameraType}
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         style={StyleSheet.absoluteFillObject}
       />
       {scanned && (
         <Button title={"Appuyer pour scanner de nouveau"} onPress={() => setScanned(false)} />
       )}
+      <View style={{backgroundColor: "orange", alignItems: 'center'}}>
+        <TouchableOpacity onPress={handleChangeCamera}>
+          <MaterialCommunityIcons name="camera-flip" size={50} color="white" />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -49,6 +65,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "rgba(18, 16, 11, 1)",
+    justifyContent: "space-between"
   },
 });
 

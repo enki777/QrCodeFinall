@@ -190,6 +190,11 @@ const DonneesScreen = ({ navigation }) => {
               // console.log(codes[key]["data"]);
               return (
                 <View key={index} style={styles.eachCard}>
+                  {<QRCode
+        value={JSON.stringify(codes[key])}
+        size={300}
+        getRef={(ref) => (svg.current = ref)}
+      />}
                   {/* <DisplayQrCode formData={codes[key]["id"]} /> */}
                   <Text style={{ marginTop: 5 }}>
                     Qrcode_id : {codes[key]["id"]}
