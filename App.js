@@ -166,12 +166,12 @@ const App = ({ navigation }) => {
       ) {
         console.log("App has come to the foreground!");
 
-        DisconnectHandler();
+        // DisconnectHandler();
       }
 
       appState.current = nextAppState;
       setAppStateVisible(appState.current);
-      console.log("AppState", appState.current);
+      console.log("AppState ", appState.current);
     });
 
     return () => {
