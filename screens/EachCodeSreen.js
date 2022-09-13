@@ -4,6 +4,7 @@ import { doc, db, getDoc } from "../firebase";
 import QRCode from "react-native-qrcode-svg";
 import * as Print from "expo-print";
 import { shareAsync } from "expo-sharing";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const EachCodeScreen = ({ navigation, route }) => {
   const svg = useRef(null);
@@ -47,6 +48,8 @@ const EachCodeScreen = ({ navigation, route }) => {
         value={JSON.stringify(qrData)}
         size={300}
         getRef={(ref) => (svg.current = ref)}
+        color="rgba(20, 32, 37, 1)"
+        backgroundColor="white"
       />
     );
   };
@@ -129,7 +132,11 @@ const EachCodeScreen = ({ navigation, route }) => {
         }}
       >
         <View
-          style={{ padding: 10, backgroundColor: "white", borderRadius: 5 }}
+          style={{
+            padding: 10,
+            backgroundColor: "rgba(20, 32, 37, 1)",
+            borderRadius: 5,
+          }}
         >
           {<DisplayQrCode />}
           {/* {
@@ -187,38 +194,36 @@ const EachCodeScreen = ({ navigation, route }) => {
         <View
           style={{
             marginTop: 20,
-            backgroundColor: "purple",
+            backgroundColor: "#6825B6",
             paddingHorizontal: 10,
             borderRadius: 20,
-            width: "20%",
+            width: "30%",
           }}
         >
-          <Button title="Imprimer" color="white" onPress={print} />
+          <Button raised title="Imprimer" color="white" onPress={print} />
         </View>
-        <View
-          style={{
-            marginTop: 20,
-            backgroundColor: "purple",
-            paddingHorizontal: 10,
-            borderRadius: 20,
-            width: "20%",
-          }}
-        >
-          {Platform.OS === "ios" && (
-            <>
-              {/* <View style={styles.spacer} /> */}
-              <Button
-                title="Choisir imprimante"
-                color="white"
-                onPress={selectPrinter}
-              />
-              {/* <View style={styles.spacer} /> */}
-              {selectedPrinter ? (
-                <Text>{`Selected printer: ${selectedPrinter.name}`}</Text>
-              ) : undefined}
-            </>
-          )}
-        </View>
+        {Platform.OS === "ios" && (
+          <View
+            style={{
+              marginTop: 20,
+              backgroundColor: "#6825B6",
+              paddingHorizontal: 10,
+              borderRadius: 20,
+              width: "30%",
+            }}
+          >
+            <Button
+              raised
+              title="Choisir imprimante"
+              color="white"
+              onPress={selectPrinter}
+            />
+
+            {selectedPrinter ? (
+              <Text>{`Selected printer: ${selectedPrinter.name}`}</Text>
+            ) : undefined}
+          </View>
+        )}
       </View>
     </View>
   );

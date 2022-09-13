@@ -119,7 +119,7 @@ const ReclamationsScreen = ({ navigation, route }) => {
             navigation.navigate("CreerReclam");
           }}
         >
-          <AntDesign name="pluscircle" size={40} color="purple" />
+          <AntDesign name="pluscircle" size={40} color="#6825B6" />
         </TouchableOpacity>
         <View
           style={{

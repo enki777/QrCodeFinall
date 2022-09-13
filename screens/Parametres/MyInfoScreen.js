@@ -1,31 +1,92 @@
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { View, Text, Button, Alert } from "react-native";
-import { auth } from "../../firebase";
+// import { auth } from "../../firebase";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
 
-const MyInfoScreen = () => {
+const MyInfoScreen = ({ navigation, route }) => {
   const [user, setUser] = useState({});
 
-  useEffect(() => {
-    setUser({
-      displayName: auth.currentUser.displayName,
-      email: auth.currentUser.email,
-      photoURL: auth.currentUser.photoURL,
-      emailVerified: auth.currentUser.emailVerified,
-      uid: auth.currentUser.uid,
+  useLayoutEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      const auth = getAuth();
+      setUser({
+        displayName: auth.currentUser.displayName,
+        email: auth.currentUser.email,
+        photoURL: auth.currentUser.photoURL,
+        emailVerified: auth.currentUser.emailVerified,
+        uid: auth.currentUser.uid,
+      });
     });
-  }, []);
+
+    return unsubscribe;
+  }, [navigation]);
 
   const handleUpdatePseudo = async () => {
-    Alert.alert("Validation", "Acceptez-vous la modification du QR Code ? ", [
-      {
-        text: "Annuler",
-        onPress: () => console.log("Annuler appuyé"),
-      },
-      {
-        text: "Valider",
-        onPress: () => updateQr(),
-      },
-    ]);
+    Alert.prompt(
+      "Mise à jour de votre pseudo",
+      "",
+      [
+        {
+          text: "Annuler",
+          style: "cancel",
+          // onPress: () => ,
+        },
+        {
+          text: "Valider",
+          onPress: (e) => updatePseudo(e),
+        },
+      ],
+      "plain-text",
+      user.displayName
+    );
+  };
+
+  const updatePseudo = async (string) => {
+    // console.log(string);
+    const auth = getAuth();
+    updateProfile(auth.currentUser, {
+      displayName: string,
+      //   photoURL:
+      //     photoUrl ||
+      //     "https://www.freepnglogos.com/uploads/among-us-png/among-us-purple-character-png-1.png",
+    }).then((res) => {
+      Alert.alert(`Votre pseudo : ${string} \n a bien été sauvegardé.`);
+      navigation.replace("MesInfos");
+    });
+  };
+
+  const promptPhotoUrlForm = async () => {
+    Alert.prompt(
+      "Mise à jour de votre image",
+      "",
+      [
+        {
+          text: "Annuler",
+          style: "cancel",
+          // onPress: () => ,
+        },
+        {
+          text: "Valider",
+          onPress: (e) => handleUpdatePhotoUrl(e),
+        },
+      ],
+      "plain-text"
+      // user.photoURL
+    );
+  };
+
+  const handleUpdatePhotoUrl = async (string) => {
+    const auth = getAuth();
+    updateProfile(auth.currentUser, {
+      photoURL: string,
+    }).then((res) => {
+      Alert.alert(`Votre image : ${string} \n a bien été sauvegardée.`);
+      navigation.replace("MesInfos");
+    });
   };
 
   return (
@@ -91,11 +152,19 @@ const MyInfoScreen = () => {
         </View> */}
 
         <View style={{ width: "90%", margin: 5 }}>
-          <Button title="Ajouter une photo" />
+          <Button
+            title="Ajouter une photo"
+            color="#6825B6"
+            onPress={promptPhotoUrlForm}
+          />
         </View>
 
         <View style={{ width: "90%", margin: 5 }}>
-          <Button title="Modifier mon pseudo" onPress={handleUpdatePseudo} />
+          <Button
+            title="Modifier mon pseudo"
+            onPress={handleUpdatePseudo}
+            color="#6825B6"
+          />
         </View>
       </View>
     </View>

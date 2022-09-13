@@ -22,7 +22,7 @@ const ChaqueReclamScreen = ({ navigation, route }) => {
     <View
       style={{
         flex: 1,
-        backgroundColor: "lightgrey",
+        backgroundColor: "rgba(29, 46, 54, 1)",
         alignItems: "center",
         justfiContent: "flex-start",
         padding: 20,
@@ -31,7 +31,7 @@ const ChaqueReclamScreen = ({ navigation, route }) => {
       <View
         style={{
           width: "100%",
-          backgroundColor: "white",
+          backgroundColor: "rgba(0, 0, 0, 0.2)",
           padding: 10,
           alignItems: "center",
           borderRadius: 4,
@@ -42,15 +42,17 @@ const ChaqueReclamScreen = ({ navigation, route }) => {
             <View
               key={index}
               style={{
-                backgroundColor: "lightgrey",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                // backgroundColor: "white",
                 margin: 10,
                 width: "100%",
                 borderRadius: 4,
                 padding: 10,
               }}
             >
-              <Text>{key}</Text>
-              <Text>{reclam[key]}</Text>
+              <Text style={{ color: "white" }}>{key}</Text>
+              <Text style={{ color: "orange" }}>{reclam[key]}</Text>
             </View>
           );
         })}

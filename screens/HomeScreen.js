@@ -10,7 +10,8 @@ import {
 import { auth } from "../firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StatusBar } from "expo-status-bar";
-import { Entypo } from "@expo/vector-icons";
+import { Entypo, AntDesign } from "@expo/vector-icons";
+import { Avatar } from "@rneui/themed";
 
 const Homescreen = ({ route, navigation }) => {
   const [userName, setUserName] = useState("");
@@ -18,11 +19,56 @@ const Homescreen = ({ route, navigation }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const pulseAnim = useRef(new Animated.Value(0)).current;
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    console.log(auth.currentUser.photoURL);
     setUserName(auth.currentUser.displayName);
-    // navigation.setOptions({
-    //   // headerTitle: "Accueil",
-    // });
+    navigation.setOptions({
+      headerTitle: "WoodLand",
+      headerLeft: () => (
+        <View
+          style={{
+            marginLeft: 20,
+            // backgroundColor: "red",
+            width: "30%",
+            // padding: 5,
+          }}
+        >
+          <TouchableOpacity
+            style={{
+              flexDirection: "row",
+              justifyContent: "flex-start",
+              alignItems: "center",
+            }}
+            onPress={() => navigation.navigate("MesInfos")}
+          >
+            <Avatar
+              rounded
+              source={{ uri: auth?.currentUser?.photoURL }}
+              avatarStyle={{ borderColor: "white", borderWidth: 1 }}
+            />
+            <View
+              style={{
+                marginLeft: 5,
+
+                backgroundColor: "white",
+                paddingHorizontal: 10,
+                paddingVertical: 2,
+                borderRadius: 3,
+              }}
+            >
+              <Text
+                style={{
+                  color: "#6825B6",
+                  fontSize: 20,
+                }}
+              >
+                {auth?.currentUser?.displayName}
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      ),
+    });
     Animated.timing(fadeAnim, {
       toValue: 1,
       duration: 1000,
@@ -54,25 +100,45 @@ const Homescreen = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View
-        style={{
-          height: "30%",
-          // backgroundColor: "red",
-          width: "100%",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      ></View>
       <View style={styles.buttonsContainer}>
         {isAdmin == true && (
-          <View style={styles.buttons}>
-            <Button
+          // <View style={styles.buttons}>
+          <View
+            style={{
+              backgroundColor: "rgba(0, 0, 0, 0.43)",
+              borderRadius: 5,
+              padding: 20,
+              justifyContent: "center",
+              margin: 10,
+            }}
+          >
+            <TouchableOpacity
+              style={{ alignItems: "center" }}
               onPress={addButtonHandler}
-              title="Creer un nouvel emplacement"
-              color="#841584"
-              // accessibilityLabel="Learn more about this purple button"
-            />
+            >
+              <AntDesign name="pluscircle" size={80} color="#6825B6" />
+              <View
+                style={{
+                  borderRadius: 30,
+                  // backgroundColor: "purple",
+                  paddingLeft: 15,
+                  paddingRight: 15,
+                  paddingTop: 10,
+                  paddingBottom: 10,
+                }}
+              >
+                <Text
+                  style={{
+                    color: "white",
+                    fontSize: 17,
+                  }}
+                >
+                  Ajouter un emplacement
+                </Text>
+              </View>
+            </TouchableOpacity>
           </View>
+          // </View>
         )}
         <View
           style={{
@@ -80,13 +146,14 @@ const Homescreen = ({ route, navigation }) => {
             borderRadius: 5,
             padding: 20,
             justifyContent: "center",
+            margin: 10,
           }}
         >
           <TouchableOpacity
             style={{ alignItems: "center" }}
             onPress={readButtonHandler}
           >
-            <Entypo name="camera" size={100} color="orange" style={{}} />
+            <Entypo name="camera" size={80} color="#6825B6" style={{}} />
             <View
               style={{
                 borderRadius: 30,
@@ -119,6 +186,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     backgroundColor: "rgba(29, 46, 54, 1)",
+    justifyContent: "center",
   },
   addButton: {
     margin: 30,
@@ -141,18 +209,15 @@ const styles = StyleSheet.create({
   },
   halfBottom: {},
   buttonsContainer: {
-    flex: 1,
-    // width: "100%",
-    justifyContent: "flex-start",
+    // backgroundColor: "red",
+    // flex: 1,
+    width: "80%",
+    // padding: 10,
+    // justifyContent: "center",
     marginTop: 0,
     // backgroundColor: "blue",
   },
-  buttons: {
-    // flex: 1,
-    marginTop: 20,
-    marginLeft: "15%",
-    marginRight: "15%",
-  },
+  buttons: {},
 });
 
 export default Homescreen;

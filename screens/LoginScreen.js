@@ -4,8 +4,22 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { doc, getDocs, collection, query, where } from "firebase/firestore";
 import { db } from "../firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { auth } from "../firebase";
 
 const LoginScreen = ({ navigation }) => {
+  const [email, setEmail] = useState("");
+  const [mdp, setMdp] = useState("");
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((authUser) => {
+      if (authUser) {
+        navigation.replace("Root");
+      }
+    });
+
+    return unsubscribe;
+  }, []);
+
   const storeAdminStatus = async (value) => {
     try {
       const jsonValue = JSON.stringify(value);
@@ -14,18 +28,6 @@ const LoginScreen = ({ navigation }) => {
       // saving error
     }
   };
-
-  useLayoutEffect(() => {
-    // const unsubscribe = auth.onAuthStateChanged((authUser) => {
-    //   if (authUser) {
-    //     navigation.replace("Root");
-    //   }
-    // });
-    // return unsubscribe;
-  }, []);
-
-  const [email, setEmail] = useState("");
-  const [mdp, setMdp] = useState("");
 
   const signIn = async () => {
     const auth = getAuth();
@@ -88,7 +90,7 @@ const LoginScreen = ({ navigation }) => {
       <View style={styles.buttonContainer}>
         <Button
           style={styles.button2}
-          color="purple"
+          color="#6825B6"
           title="S'inscrire"
           onPress={() => navigation.navigate("register")}
         />

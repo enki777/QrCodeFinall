@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Button } from "react-native";
+import { View, Text, Button, Alert } from "react-native";
 import { getAuth, signOut } from "firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -23,15 +23,22 @@ const ParametresScreen = ({ navigation }) => {
         <View style={{ margin: 20 }}>
           <Button
             title="Créer un nouvel utilisateur"
-            color="purple"
+            color="#6825B6"
             onPress={CreateuserHandlder}
           />
         </View>
         <View style={{ margin: 20 }}>
           <Button
             title="Voir utilisateurs"
-            color="purple"
+            color="#6825B6"
             onPress={SeeUsersHandler}
+          />
+        </View>
+        <View style={{ margin: 20 }}>
+          <Button
+            title="Mes informations"
+            color="#6825B6"
+            onPress={() => navigation.navigate("MesInfos")}
           />
         </View>
       </View>
@@ -73,11 +80,11 @@ const ParametresScreen = ({ navigation }) => {
   };
 
   const CreateuserHandlder = () => {
-    navigation.navigate("CreateAccount");
+    Alert.alert("Fonctionnalité momentanément non disponible.");
   };
 
   const SeeUsersHandler = () => {
-    navigation.navigate("VoirUtilisateurs");
+    Alert.alert("Fonctionnalité momentanément non disponible.");
   };
   return (
     <View style={{ backgroundColor: "rgba(29, 46, 54, 1)", flex: 1 }}>
@@ -109,7 +116,7 @@ const ParametresScreen = ({ navigation }) => {
         ) : (
           <View>
             <View>
-              <Text style={{ color: "purple", fontSize: 20, margin: 20 }}>
+              <Text style={{ color: "#6825B6", fontSize: 20, margin: 20 }}>
                 Espace utilisateur
               </Text>
             </View>

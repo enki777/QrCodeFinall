@@ -31,109 +31,107 @@ import { auth } from "./firebase";
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
+function MyTabs({ navigation }) {
+  return (
+    <Tab.Navigator
+      screenOptions={{
+        headerTitleAlign: "center",
+        headerTitleStyle: "orange",
+        headerStyle: {
+          backgroundColor: "rgba(20, 32, 37, 1)",
+        },
+        // activeTintColor: "purple",
+        // inactiveTintColor: "red",
+        tabBarStyle: {
+          backgroundColor: "rgba(20, 32, 37, 1)",
+        },
+      }}
+    >
+      <Tab.Screen
+        name="Accueil"
+        // title="Accueil"
+        component={Homescreen}
+        options={{
+          headerTitleStyle: {
+            color: "orange",
+          },
+          tabBarIcon: ({ size, color, focused, tintColor }) => (
+            <Entypo
+              name={"home"}
+              size={size}
+              color={focused ? "#6825B6" : "orange"}
+              // color={"black"}
+            />
+          ),
+          tabBarActiveTintColor: "#6825B6",
+          tabBarInactiveTintColor: "white",
+          // headerRight: () => (
+          //   <View
+          //     style={{
+          //       backgroundColor: "rgba(29, 46, 54, 1)",
+          //       marginRight: 20,
+          //       fontSize: 10,
+          //       borderRadius: 20,
+          //       paddingHorizontal: 20,
+          //       paddingVertical: 7,
+          //     }}
+          //   >
+          //     <Text style={{ color: "orange" }}>
+          //       {auth.currentUser.displayName}
+          //     </Text>
+          //   </View>
+          // ),
+        }}
+      />
+      <Tab.Screen
+        name="Donnees"
+        title="Codes"
+        component={DonneesScreen}
+        options={{
+          // headerShown: false,
+          // headerStyle: {
+          //   backgroundColor: "white", //#1DA1F2
+          // },
+          headerBackTitle: "salasd",
+          headerTitleStyle: {
+            color: "orange",
+          },
+          tabBarIcon: ({ size, color, focused, tintColor }) => (
+            <MaterialCommunityIcons
+              name="data-matrix"
+              color={focused ? "#6825B6" : "orange"}
+              size={size}
+            />
+          ),
+          tabBarActiveTintColor: "#6825B6",
+          tabBarInactiveTintColor: "white",
+        }}
+      />
+      <Tab.Screen
+        name="Parametres"
+        component={ParametresScreen}
+        options={{
+          headerTitleStyle: {
+            color: "orange",
+          },
+          tabBarIcon: ({ focused, size }) => (
+            <Ionicons
+              name="settings"
+              color={focused ? "#6825B6" : "orange"}
+              size={size}
+            />
+          ),
+          tabBarActiveTintColor: "#6825B6",
+          tabBarInactiveTintColor: "white",
+        }}
+      />
+    </Tab.Navigator>
+  );
+}
+
 const App = ({ navigation }) => {
   const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
-  const [displayName, setDisplayName] = useState(null);
-
-  function MyTabs({ navigation }) {
-    return (
-      <Tab.Navigator
-        screenOptions={{
-          // headerBackTitleVisible: true,
-
-          headerTitleAlign: "center",
-          headerTitleStyle: "orange",
-          headerStyle: {
-            backgroundColor: "rgba(20, 32, 37, 1)",
-          },
-          activeTintColor: "purple",
-          inactiveTintColor: "black",
-          tabBarStyle: {
-            backgroundColor: "rgba(20, 32, 37, 1)",
-            // borderColor: "red",
-          },
-        }}
-      >
-        <Tab.Screen
-          name="Accueil"
-          // title="Accueil"
-          component={Homescreen}
-          options={{
-            headerTitleStyle: {
-              color: "orange",
-            },
-            tabBarIcon: ({ size, color, focused, tintColor }) => (
-              <Entypo
-                name={"home"}
-                size={size}
-                color={focused ? "purple" : "orange"}
-                // color={"black"}
-              />
-            ),
-            tabBarActiveTintColor: "purple",
-            tabBarInactiveTintColor: "white",
-            headerRight: () => (
-              <View
-                style={{
-                  backgroundColor: "rgba(29, 46, 54, 1)",
-                  marginRight: 20,
-                  fontSize: 10,
-                  borderRadius: 20,
-                  paddingHorizontal: 20,
-                  paddingVertical: 7,
-                }}
-              >
-                <Text style={{ color: "orange" }}>{displayName}</Text>
-              </View>
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="Donnees"
-          title="Codes"
-          component={DonneesScreen}
-          options={{
-            // headerShown: false,
-            // headerStyle: {
-            //   backgroundColor: "white", //#1DA1F2
-            // },
-            headerBackTitle: "salasd",
-            headerTitleStyle: {
-              color: "orange",
-            },
-            tabBarIcon: ({ size, color, focused, tintColor }) => (
-              <MaterialCommunityIcons
-                name="data-matrix"
-                color={focused ? "purple" : "orange"}
-                size={size}
-              />
-            ),
-            tabBarActiveTintColor: "purple",
-            tabBarInactiveTintColor: "white",
-          }}
-        />
-        <Tab.Screen
-          name="Parametres"
-          component={ParametresScreen}
-          options={{
-            headerTitleStyle: {
-              color: "orange",
-            },
-            tabBarIcon: ({ focused, size }) => (
-              <Ionicons
-                name="settings"
-                color={focused ? "purple" : "orange"}
-                size={size}
-              />
-            ),
-            tabBarActiveTintColor: "purple",
-            tabBarInactiveTintColor: "white",
-          }}
-        />
-      </Tab.Navigator>
-    );
-  }
 
   const removeAdminStatus = async () => {
     try {
@@ -158,9 +156,6 @@ const App = ({ navigation }) => {
   };
 
   useEffect(() => {
-    if (auth.currentUser) {
-      setDisplayName(auth.currentUser.displayName);
-    }
     const subscription = AppState.addEventListener("change", (nextAppState) => {
       if (
         appState.current.match(/inactive|background /) &&

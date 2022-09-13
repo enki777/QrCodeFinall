@@ -168,7 +168,7 @@ const UpdateQrScreen = ({ navigation, route }) => {
         <Button
           title="Appliquer les modifications"
           onPress={ValidateUpdate}
-          color="purple"
+          color="#6825B6"
         />
       </View>
     </ScrollView>

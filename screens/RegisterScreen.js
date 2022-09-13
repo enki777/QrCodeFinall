@@ -25,6 +25,7 @@ const RegisterScreen = ({ navigation }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [mdp, setMdp] = useState("");
+  const [photoUrl, setPhotoUrl] = useState("");
 
   const register = () => {
     const auth = getAuth();
@@ -36,14 +37,17 @@ const RegisterScreen = ({ navigation }) => {
 
         updateProfile(auth.currentUser, {
           displayName: name,
-        })
-          .then(() => {
-            navigation.replace("Root");
-          })
-          .catch((error) => {
-            // An error occurred
-            // ...
-          });
+          photoURL:
+            photoUrl ||
+            "https://www.freepnglogos.com/uploads/among-us-png/among-us-purple-character-png-1.png",
+        });
+        // .then(() => {
+        //   navigation.replace("Root");
+        // })
+        // .catch((error) => {
+        //   // An error occurred
+        //   // ...
+        // });
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -61,7 +65,7 @@ const RegisterScreen = ({ navigation }) => {
           style={styles.input}
           value={name}
           onChangeText={(text) => setName(text)}
-          placeholder="Votre Nom"
+          placeholder="Votre Pseudo"
           placeholderTextColor="lightgrey"
         />
 
@@ -71,6 +75,15 @@ const RegisterScreen = ({ navigation }) => {
           value={email}
           onChangeText={(text) => setEmail(text)}
           placeholder="Votre Email"
+          placeholderTextColor="lightgrey"
+        />
+
+        <TextInput
+          autoCapitalize="none"
+          placeholder="Votre image (optionnel)"
+          style={styles.input}
+          value={photoUrl}
+          onChangeText={(text) => setPhotoUrl(text)}
           placeholderTextColor="lightgrey"
         />
 
@@ -93,7 +106,7 @@ const RegisterScreen = ({ navigation }) => {
           style={styles.button}
           title="S'inscrire"
           onPress={register}
-          color="purple"
+          color="#6825B6"
         />
       </View>
     </View>

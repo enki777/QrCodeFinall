@@ -117,6 +117,7 @@ const DonneesScreen = ({ navigation }) => {
         value={JSON.stringify(formData)}
         size={300}
         getRef={(ref) => (svg.current = ref)}
+        color="rgba(20, 32, 37, 1)"
       />
     );
   };
@@ -125,8 +126,8 @@ const DonneesScreen = ({ navigation }) => {
     <SafeAreaView
       style={{
         flex: 1,
-        paddingLeft: 20,
-        paddingRight: 20,
+        paddingLeft: 10,
+        paddingRight: 10,
         backgroundColor: "rgba(29, 46, 54, 1)",
       }}
     >
@@ -166,7 +167,7 @@ const DonneesScreen = ({ navigation }) => {
             <Entypo
               name="magnifying-glass"
               size={30}
-              color="purple"
+              color="#6825B6"
               // style={{ padding: 10, backgroundColor: "white" }}
             />
           </TouchableOpacity>
@@ -187,7 +188,15 @@ const DonneesScreen = ({ navigation }) => {
           ? Object.keys(codes).map((key, index) => {
               return (
                 <View key={index} style={styles.eachCard}>
-                  <DisplayQrCode formData={codes[key]} />
+                  <View
+                    style={{
+                      padding: 10,
+                      backgroundColor: "rgba(25, 42, 50, 1)",
+                      borderRadius: 5,
+                    }}
+                  >
+                    <DisplayQrCode formData={codes[key]} />
+                  </View>
                   {/* {
                     <QRCode
                       value={JSON.stringify(codes[key])}
@@ -196,15 +205,23 @@ const DonneesScreen = ({ navigation }) => {
                     />
                   } */}
                   {/* <DisplayQrCode formData={codes[key]["id"]} /> */}
-                  <Text style={{ marginTop: 5 }}>
+                  <Text style={{ marginTop: 5, color: "white" }}>
                     Qrcode_id : {codes[key]["id"]}
                   </Text>
 
                   <View style={styles.actionsContainer}>
-                    <View style={{ marginBottom: 10 }}>
+                    <View
+                      style={{
+                        // borderWidth: 1,
+                        // borderColor: "orange",
+                        borderBottomLeftRadius: 20,
+                        borderTopLeftRadius: 20,
+                        backgroundColor: "orange",
+                      }}
+                    >
                       <Button
                         title="Voir Qr Code"
-                        color="orange"
+                        color="white"
                         onPress={() => {
                           navigation.navigate("EachCode", {
                             qrId: codes[key]["id"],
@@ -213,11 +230,19 @@ const DonneesScreen = ({ navigation }) => {
                       />
                     </View>
                     {isAdmin == true ? (
-                      <View>
-                        <View style={{ marginTop: 5 }}>
+                      <View style={{ flexDirection: "row" }}>
+                        <View
+                          style={{
+                            // borderWidth: 2,
+                            // borderColor: "black",
+                            // padding: 10,
+                            margin: 2,
+                            backgroundColor: "#6825B6",
+                          }}
+                        >
                           <Button
                             title="Modifier le Qr Code"
-                            color="purple"
+                            color="white"
                             onPress={() => {
                               navigation.navigate("ModifierQrCodes", {
                                 qrCode: codes[key]["id"],
@@ -225,10 +250,18 @@ const DonneesScreen = ({ navigation }) => {
                             }}
                           />
                         </View>
-                        <View style={{ marginTop: 5 }}>
+                        <View
+                          style={{
+                            // borderWidth: 1,
+                            // borderColor: "orange",
+                            borderBottomRightRadius: 20,
+                            borderTopRightRadius: 20,
+                            backgroundColor: "#6825B6",
+                          }}
+                        >
                           <Button
                             title="Voir Reclamations"
-                            color="purple"
+                            color="white"
                             onPress={() => {
                               navigation.navigate("Reclamations", {
                                 qrCode: codes[key]["id"],
@@ -238,15 +271,25 @@ const DonneesScreen = ({ navigation }) => {
                         </View>
                       </View>
                     ) : (
-                      <Button
-                        title="Effectuer une réclamation"
-                        color="purple"
-                        onPress={() => {
-                          navigation.navigate("Reclamations", {
-                            qrCode: codes[key]["id"],
-                          });
+                      <View
+                        style={{
+                          // borderWidth: 1,
+                          // borderColor: "#6825B6",
+                          borderTopRightRadius: 20,
+                          borderBottomRightRadius: 20,
+                          backgroundColor: "#6825B6",
                         }}
-                      />
+                      >
+                        <Button
+                          title="Effectuer une réclamation"
+                          color="white"
+                          onPress={() => {
+                            navigation.navigate("Reclamations", {
+                              qrCode: codes[key]["id"],
+                            });
+                          }}
+                        />
+                      </View>
                     )}
                   </View>
                 </View>
@@ -279,7 +322,7 @@ const styles = StyleSheet.create({
     paddingTop: "10%",
   },
   eachCard: {
-    backgroundColor: "white",
+    backgroundColor: "rgba(0, 0, 0, 0.43)",
     padding: 20,
     margin: 10,
     borderRadius: 5,
@@ -299,7 +342,12 @@ const styles = StyleSheet.create({
   actionsContainer: {
     marginTop: 10,
     width: "80%",
+    // backgroundColor: "red",
+    padding: 20,
+    flexDirection: "row",
+    justifyContent: "center",
   },
+  button: {},
 });
 
 export default DonneesScreen;

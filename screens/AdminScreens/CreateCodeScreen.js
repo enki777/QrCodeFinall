@@ -37,7 +37,7 @@ const CreateCodeScreen = ({ navigation, route }) => {
         value={emplacement}
         onChangeText={(e) => setEmplacement(e)}
         placeholder="Saisissez l'emplacement"
-        placeholderTextColor="black"
+        placeholderTextColor="lightgrey"
       />
 
       <TextInput
@@ -45,7 +45,7 @@ const CreateCodeScreen = ({ navigation, route }) => {
         onChangeText={(e) => setCodeEcran(e)}
         value={codeEcran}
         placeholder="Saisissez le code écran 1"
-        placeholderTextColor="black"
+        placeholderTextColor="lightgrey"
       />
 
       <TextInput
@@ -53,14 +53,14 @@ const CreateCodeScreen = ({ navigation, route }) => {
         value={codeEcran2}
         onChangeText={(e) => setCodeEcran2(e)}
         placeholder="Saisissez le code écran 2"
-        placeholderTextColor="black"
+        placeholderTextColor="lightgrey"
       />
 
       <View style={styles.submitButton}>
         <Button
           title="Générer le QR code"
           onPress={CreatePosteAttempt}
-          color="purple"
+          color="#6825B6"
         />
       </View>
     </View>
@@ -72,13 +72,15 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "lightgrey",
+    backgroundColor: "rgba(29, 46, 54, 1)",
   },
   input: {
     width: 300,
-    borderBottomColor: "purple",
+    height: 40,
+    borderBottomColor: "orange",
     borderBottomWidth: 1,
     marginVertical: 20,
+    color: "white",
   },
   submitButton: {
     width: 200,
