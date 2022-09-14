@@ -6,12 +6,14 @@ import {
   StyleSheet,
   Button,
   Animated,
+  Alert,
 } from "react-native";
 
 import {
   getAuth,
   createUserWithEmailAndPassword,
   updateProfile,
+  sendEmailVerification,
 } from "firebase/auth";
 
 const RegisterScreen = ({ navigation }) => {
@@ -41,6 +43,27 @@ const RegisterScreen = ({ navigation }) => {
             photoUrl ||
             "https://www.freepnglogos.com/uploads/among-us-png/among-us-purple-character-png-1.png",
         });
+
+        const actionCodeSettings = {
+          url:
+            "https://com.enki777.QrcodeFinal/?email=" + auth.currentUser.email,
+          iOS: {
+            bundleId: "com.enki777.QrcodeFinal",
+          },
+          android: {
+            packageName: "com.enki777.QrcodeFinal",
+            installApp: true,
+            minimumVersion: "12",
+          },
+          handleCodeInApp: true,
+        };
+
+        sendEmailVerification(auth.currentUser)
+          .then((res) => {
+            console.log(res);
+            Alert.alert("Un email de vérification vous a été envoyé.");
+          })
+          .catch((e) => console.log(e));
         // .then(() => {
         //   navigation.replace("Root");
         // })

@@ -20,16 +20,15 @@ const Homescreen = ({ route, navigation }) => {
   const pulseAnim = useRef(new Animated.Value(0)).current;
 
   useLayoutEffect(() => {
-    console.log(auth.currentUser.photoURL);
     setUserName(auth.currentUser.displayName);
     navigation.setOptions({
-      headerTitle: "WoodLand",
+      // headerTitle: "WoodLand",
       headerLeft: () => (
         <View
           style={{
             marginLeft: 20,
             // backgroundColor: "red",
-            width: "30%",
+            // width: "30%",
             // padding: 5,
           }}
         >
@@ -48,9 +47,8 @@ const Homescreen = ({ route, navigation }) => {
             />
             <View
               style={{
-                marginLeft: 5,
-
-                backgroundColor: "white",
+                // marginLeft: 5,
+                backgroundColor: "rgba(0, 0, 0, 0.2)",
                 paddingHorizontal: 10,
                 paddingVertical: 2,
                 borderRadius: 3,
@@ -58,7 +56,7 @@ const Homescreen = ({ route, navigation }) => {
             >
               <Text
                 style={{
-                  color: "#6825B6",
+                  color: "orange",
                   fontSize: 20,
                 }}
               >
@@ -76,7 +74,7 @@ const Homescreen = ({ route, navigation }) => {
     }).start();
 
     getData("isAdmin").then((res) => {
-      console.log(res);
+      // console.log(res);
       setIsAdmin(res);
     });
   }, [navigation]);

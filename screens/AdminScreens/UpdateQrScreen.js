@@ -7,9 +7,11 @@ import {
   ScrollView,
   SafeAreaView,
   Alert,
+  TouchableOpacity,
 } from "react-native";
 import { collection, doc, db, getDoc, updateDoc } from "../../firebase";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { AntDesign } from "@expo/vector-icons";
 
 const UpdateQrScreen = ({ navigation, route }) => {
   const [qrId, setQrId] = useState();
@@ -64,15 +66,12 @@ const UpdateQrScreen = ({ navigation, route }) => {
     const goodCodeEcan = await getGoodCodeEcran(codeEcran);
     const goodCodeEcan2 = await getGoodCodeEcran2(codeEcran2);
 
-    console.log(goodEmplacement);
-    console.log(goodCodeEcan);
-    console.log(goodCodeEcan2);
-
     const docRef = doc(db, "QrCode", qrId);
     updateDoc(docRef, {
       emplacement: goodEmplacement,
       codeEcran: goodCodeEcan,
       codeEcran2: goodCodeEcan2,
+      isPrinted: qrData.isPrinted,
     }).then((res) => {
       Alert.alert("Le Document a bien été mis à jour.");
     });
@@ -93,6 +92,26 @@ const UpdateQrScreen = ({ navigation, route }) => {
         },
       ]);
     }
+  };
+
+  const handleAddTextInput = async () => {
+    Alert.alert("fonctionnalité momentanément indisponible");
+    // return (
+    //   <View
+    //     style={{
+    //       flexDirection: "row",
+    //       width: "100%",
+    //       marginTop: 10,
+    //     }}
+    //   >
+    //     <TextInput
+    //       style={{ width: "50%", color: "white" }}
+    //       onChangeText={(e) => setEmplacement(e)}
+    //       placeholder={qrData.emplacement}
+    //       placeholderTextColor="rgba(110, 60, 7, 1)"
+    //     />
+    //   </View>
+    // );
   };
 
   return (
@@ -164,7 +183,13 @@ const UpdateQrScreen = ({ navigation, route }) => {
         * Effacez un champ pour retrouver sa valeur avant modification.
       </Text>
 
-      <View style={{ marginTop: 30 }}>
+      <View style={{ alignItems: "center", marginTop: 20 }}>
+        <TouchableOpacity onPress={handleAddTextInput}>
+          <AntDesign name="pluscircle" size={40} color="#6825B6" />
+        </TouchableOpacity>
+      </View>
+
+      <View style={{ marginTop: 20 }}>
         <Button
           title="Appliquer les modifications"
           onPress={ValidateUpdate}

@@ -13,6 +13,7 @@ const MyInfoScreen = ({ navigation, route }) => {
   useLayoutEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       const auth = getAuth();
+      console.log(auth.currentUser);
       setUser({
         displayName: auth.currentUser.displayName,
         email: auth.currentUser.email,
@@ -105,6 +106,7 @@ const MyInfoScreen = ({ navigation, route }) => {
           width: "80%",
           marginTop: 50,
           padding: 20,
+          overflow: "scroll",
         }}
       >
         <Text style={{ fontSize: 20, marginBottom: 20 }}>Mes informations</Text>

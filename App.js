@@ -52,6 +52,7 @@ function MyTabs({ navigation }) {
         // title="Accueil"
         component={Homescreen}
         options={{
+          headerTitle: "",
           headerTitleStyle: {
             color: "orange",
           },
@@ -65,22 +66,6 @@ function MyTabs({ navigation }) {
           ),
           tabBarActiveTintColor: "#6825B6",
           tabBarInactiveTintColor: "white",
-          // headerRight: () => (
-          //   <View
-          //     style={{
-          //       backgroundColor: "rgba(29, 46, 54, 1)",
-          //       marginRight: 20,
-          //       fontSize: 10,
-          //       borderRadius: 20,
-          //       paddingHorizontal: 20,
-          //       paddingVertical: 7,
-          //     }}
-          //   >
-          //     <Text style={{ color: "orange" }}>
-          //       {auth.currentUser.displayName}
-          //     </Text>
-          //   </View>
-          // ),
         }}
       />
       <Tab.Screen

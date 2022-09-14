@@ -13,9 +13,9 @@ const AllUsersScreen = ({ navigation }) => {
     const test = getDocs(collection(db, "utilisateurs"));
     test.then((res) =>
       res.forEach((doc) => {
-        console.log(`${doc.id} => ${doc.data()}`);
-        console.log(doc.data());
-        setUtilisateurs({})
+        // console.log(`${doc.id} => ${doc.data()}`);
+        // console.log(doc.data());
+        setUtilisateurs({});
       })
     );
   }, []);

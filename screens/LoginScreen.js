@@ -11,8 +11,16 @@ const LoginScreen = ({ navigation }) => {
   const [mdp, setMdp] = useState("");
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((authUser) => {
+    const unsubscribe = auth.onAuthStateChanged(async (authUser) => {
+      // console.log(authUser.emailVerified);
       if (authUser) {
+        // const UserRole = collection(db, "UserRole");
+        // const q = query(UserRole, where("userId", "==", `${authUser.uid}`));
+        // const querySnapshot = await getDocs(q);
+        // querySnapshot.forEach((doc) => {
+        //   storeAdminStatus(doc.data().isAdmin);
+        // });
+
         navigation.replace("Root");
       }
     });
@@ -40,8 +48,6 @@ const LoginScreen = ({ navigation }) => {
 
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
-          // doc.data() is never undefined for query doc snapshots
-          console.log(doc.id, " => ", doc.data());
           storeAdminStatus(doc.data().isAdmin);
         });
         navigation.replace("Root");

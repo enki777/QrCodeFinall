@@ -6,13 +6,14 @@ import { AntDesign } from "@expo/vector-icons";
 
 const ReclamationsScreen = ({ navigation, route }) => {
   const [reclamations, setReclamations] = useState([]);
-  const [qrId, setQrId] = useState();
+  const [qrId, setQrId] = useState("");
   const [count, setCount] = useState(0);
 
   useLayoutEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
-      setQrId(route.params.qrCode);
-      gatAllReclamations(route.params.qrCode);
+      // console.log(route.params);
+      setQrId(route.params.qrId);
+      gatAllReclamations(route.params.qrId);
       // console.log("TOUTES LES RECLAMS : ===>" + reclamations);
     });
     return unsubscribe;
@@ -20,7 +21,7 @@ const ReclamationsScreen = ({ navigation, route }) => {
 
   const gatAllReclamations = async (qrId) => {
     if (qrId != "") {
-      console.log(qrId);
+      // console.log(qrId);
       const q = query(collection(db, "Reclamation"), where("qrId", "==", qrId));
       const querySnapshot = await getDocs(q);
       let test = [];
@@ -45,17 +46,18 @@ const ReclamationsScreen = ({ navigation, route }) => {
         backgroundColor: "rgba(29, 46, 54, 1)",
         flex: 1,
         alignItems: "center",
+        // width: "100%",
       }}
     >
-      <ScrollView
+      <View
         style={{
           flex: 4,
+          alignItems: "center",
           marginTop: 40,
           padding: 10,
           borderRadius: 5,
-          backgroundColor: "rgba(0, 0, 0, 0.43)",
+          backgroundColor: "rgba(0, 0, 0, 0.4)",
           width: "90%",
-          // height: "20%",
         }}
       >
         <Text
@@ -68,55 +70,87 @@ const ReclamationsScreen = ({ navigation, route }) => {
         >
           Toutes les réclamations concernant ce Qr code :
         </Text>
-        <View
-          style={{
-            alginItems: "center",
-            width: "80%",
-            justifyContent: "center",
-          }}
-        >
-          {Object.keys(reclamations).map((key) => {
+        <ScrollView>
+          {Object.keys(reclamations).map((key, index) => {
             return (
-              <TouchableOpacity
-                style={{
-                  flexDirection: "row",
-                  backgroundColor: "lightgrey",
-                  padding: 10,
-
-                  borderRadius: 5,
-                  margin: 10,
-                }}
-                onPress={() => {
-                  eachReclamation(reclamations[key].id);
-                }}
-                key={key}
-              >
-                <Text>Motif : </Text>
-                <Text>{reclamations[key].data.commentaire}</Text>
-              </TouchableOpacity>
+              <View key={index} style={{ flexDirection: "row", width: "100%" }}>
+                <View style={{ width: "85%" }}>
+                  {reclamations[key].data.isDone ? (
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        backgroundColor: "grey",
+                        padding: 10,
+                        justifyContent: "space-between",
+                        borderRadius: 5,
+                        margin: 10,
+                      }}
+                      onPress={() => {
+                        eachReclamation(reclamations[key].id);
+                      }}
+                      key={key}
+                    >
+                      <Text>Motif : </Text>
+                      <Text>{reclamations[key].data.motif}</Text>
+                    </View>
+                  ) : (
+                    <TouchableOpacity
+                      style={{
+                        flexDirection: "row",
+                        backgroundColor: "lightgrey",
+                        padding: 10,
+                        justifyContent: "space-between",
+                        borderRadius: 5,
+                        margin: 10,
+                      }}
+                      onPress={() => {
+                        eachReclamation(reclamations[key].id);
+                      }}
+                      key={key}
+                    >
+                      <Text>Motif : </Text>
+                      <Text>{reclamations[key].data.motif}</Text>
+                    </TouchableOpacity>
+                  )}
+                </View>
+                <View
+                  style={{
+                    width: "10%",
+                    // backgroundColor: "blue",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    margin: 5,
+                    borderRadius: 5,
+                  }}
+                >
+                  {reclamations[key].data.isDone ? (
+                    <Text style={{ color: "red" }}>cloturée</Text>
+                  ) : (
+                    <Text style={{ color: "green" }}>en cours</Text>
+                  )}
+                </View>
+              </View>
             );
           })}
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </View>
 
       <View
         style={{
-          // flex: 1,
+          flex: 1,
           marginTop: 10,
-          // padding: 10,
           borderRadius: 5,
-          // backgroundColor: "white",
           flexDirection: "row",
-          // alignItems: "flex-start",
           justifyContent: "space-between",
           width: "90%",
-          // height: "100%",
         }}
       >
         <TouchableOpacity
           style={{ marginLeft: 20 }}
           onPress={() => {
-            navigation.navigate("CreerReclam");
+            navigation.navigate("CreerReclam", {
+              qrId: qrId,
+            });
           }}
         >
           <AntDesign name="pluscircle" size={40} color="#6825B6" />
@@ -133,7 +167,9 @@ const ReclamationsScreen = ({ navigation, route }) => {
             justifyContent: "center",
           }}
         >
-          <Text style={{ color: "orange" }}>nb de réclamations: {count}</Text>
+          <Text style={{ color: "orange" }}>
+            nombre de réclamations: {count}
+          </Text>
         </View>
       </View>
       <View style={{ flex: 1 }}>{/* <Text>salut</Text> */}</View>

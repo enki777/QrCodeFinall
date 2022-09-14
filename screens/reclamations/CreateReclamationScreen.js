@@ -1,64 +1,68 @@
-import { View, Text, StyleSheet, TextInput, Button } from "react-native";
+import { View, Text, StyleSheet, TextInput, Button, Alert } from "react-native";
 import { useEffect, useState } from "react";
+import { db } from "../../firebase";
+import { getAuth } from "firebase/auth";
+import { collection, doc, setDoc, addDoc } from "../../firebase";
 
-const CreateReclamationScreen = ({ navigation }) => {
+const CreateReclamationScreen = ({ navigation, route }) => {
+  const [motif, setMotif] = useState("");
+  const [commentaire, setCommentaire] = useState("");
+  const [qrId, setQrId] = useState("");
+
   useEffect(() => {
-    navigation.setOptions({
-      // headerStyle: { backgroundColor: "lightgrey" },
+    const unsubscribe = navigation.addListener("focus", () => {
+      setQrId(route.params.qrId);
     });
-
-    return () => {};
+    return unsubscribe;
   }, [navigation]);
 
-  const [codeEcran, setCodeEcran] = useState("");
-  const [codeEcran2, setCodeEcran2] = useState("");
-  const [emplacement, setEmplacement] = useState("");
-  // const [formData, setFormData] = useState(null);
+  const CreateReclamationAttempt = async () => {
+    const auth = getAuth();
 
-  const CreatePosteAttempt = async () => {
-    try {
-      const docRef = await addDoc(collection(db, "QrCode"), {
-        emplacement: emplacement,
-        codeEcran: codeEcran,
-        codeEcran2: codeEcran2,
-      });
+    if (motif != "" || commentaire != "") {
+      try {
+        const docRef = await addDoc(collection(db, "Reclamation"), {
+          motif: motif,
+          commentaire: commentaire,
+          qrId: qrId,
+          userId: auth.currentUser.uid,
+          isDone: false,
+        });
 
-      alert(`Document written with ID: ${docRef.id}`);
-      navigation.replace("Root");
-    } catch (e) {
-      console.error("Error adding document: ", e);
+        Alert.alert("Votre réclamation a bien été prise ne compte.");
+        navigation.replace("Reclamations", {
+          qrId: qrId,
+        });
+      } catch (e) {
+        Alert.alert(e);
+      }
+    } else {
+      Alert.alert("Veuillez remplir au moins un champs.");
     }
   };
   return (
     <View style={styles.container}>
       <TextInput
         style={styles.input}
-        value={emplacement}
-        onChangeText={(e) => setEmplacement(e)}
-        placeholder="Saisissez l'emplacement"
+        value={motif}
+        onChangeText={(e) => setMotif(e)}
+        placeholder="Motif (obligatoire)"
         placeholderTextColor="lightgrey"
       />
 
       <TextInput
         style={styles.input}
-        onChangeText={(e) => setCodeEcran(e)}
-        value={codeEcran}
-        placeholder="Saisissez le code écran 1"
+        onChangeText={(e) => setCommentaire(e)}
+        value={commentaire}
+        placeholder="Commentaire"
         placeholderTextColor="lightgrey"
-      />
-
-      <TextInput
-        style={styles.input}
-        value={codeEcran2}
-        onChangeText={(e) => setCodeEcran2(e)}
-        placeholder="Saisissez le code écran 2"
-        placeholderTextColor="lightgrey"
+        multiline={true}
       />
 
       <View style={styles.submitButton}>
         <Button
-          title="Envoyer la Réclamation"
-          onPress={CreatePosteAttempt}
+          title="Soumettre la Réclamation"
+          onPress={CreateReclamationAttempt}
           color="#6825B6"
         />
       </View>

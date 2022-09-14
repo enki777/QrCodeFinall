@@ -1,10 +1,16 @@
 import React, { useState, useLayoutEffect, useRef, useEffect } from "react";
-import { StyleSheet, View, Button, Text, Platform } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Button,
+  Text,
+  Platform,
+  TouchableOpacity,
+} from "react-native";
 import { doc, db, getDoc } from "../firebase";
 import QRCode from "react-native-qrcode-svg";
 import * as Print from "expo-print";
 import { shareAsync } from "expo-sharing";
-import { TouchableOpacity } from "react-native-gesture-handler";
 
 const EachCodeScreen = ({ navigation, route }) => {
   const svg = useRef(null);
@@ -23,10 +29,6 @@ const EachCodeScreen = ({ navigation, route }) => {
         .catch((e) => {
           alert(e);
         });
-
-      if (svg.current == null) {
-        console.log(svg.current);
-      }
     });
 
     return unsubscribe;
@@ -183,7 +185,9 @@ const EachCodeScreen = ({ navigation, route }) => {
                     </View>
                     <View>
                       <Text style={{ color: "orange" }}>
-                        {qrData.data[key]}
+                        {key == "isPrinted"
+                          ? JSON.stringify(qrData.data[key])
+                          : qrData.data[key]}
                       </Text>
                     </View>
                   </View>
@@ -200,7 +204,13 @@ const EachCodeScreen = ({ navigation, route }) => {
             width: "30%",
           }}
         >
-          <Button raised title="Imprimer" color="white" onPress={print} />
+          <Button
+            containerStyle={{}}
+            raised
+            title="Imprimer"
+            color="white"
+            onPress={print}
+          />
         </View>
         {Platform.OS === "ios" && (
           <View

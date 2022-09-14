@@ -80,11 +80,11 @@ const ParametresScreen = ({ navigation }) => {
   };
 
   const CreateuserHandlder = () => {
-    Alert.alert("Fonctionnalité momentanément non disponible.");
+    Alert.alert("Fonctionnalité momentanément indisponible");
   };
 
   const SeeUsersHandler = () => {
-    Alert.alert("Fonctionnalité momentanément non disponible.");
+    Alert.alert("Fonctionnalité momentanément indisponible");
   };
   return (
     <View style={{ backgroundColor: "rgba(29, 46, 54, 1)", flex: 1 }}>

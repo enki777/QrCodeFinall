@@ -22,6 +22,7 @@ const CreateCodeScreen = ({ navigation, route }) => {
         emplacement: emplacement,
         codeEcran: codeEcran,
         codeEcran2: codeEcran2,
+        isPrinted: false,
       });
 
       alert(`Document written with ID: ${docRef.id}`);

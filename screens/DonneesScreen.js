@@ -14,6 +14,7 @@ import {
 import { db } from "../firebase";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Feather } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import QRCode from "react-native-qrcode-svg";
 
@@ -23,6 +24,7 @@ const DonneesScreen = ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
   const [isAdmin, setIsAdminTest] = useState(false);
   const [searchText, setSearchText] = useState("");
+  const [onlyPrinted, setOnlyPrinted] = useState(false);
   const svg = useRef();
 
   useLayoutEffect(() => {
@@ -32,7 +34,7 @@ const DonneesScreen = ({ navigation }) => {
       });
 
       getData("isAdmin").then((res) => {
-        console.log(res);
+        // console.log(res);
         setIsAdminTest(res);
       });
     });
@@ -74,7 +76,7 @@ const DonneesScreen = ({ navigation }) => {
 
   const handleSearchPress = async () => {
     if (searchText == "") {
-      console.log("vide");
+      // console.log("vide");
       return Alert.alert("Veuillez saisir l'emplacement");
     }
     let test = [];
@@ -87,19 +89,19 @@ const DonneesScreen = ({ navigation }) => {
     querySnapshot.forEach((doc) => {
       test.push({ id: doc.id, data: doc.data() });
     });
-    console.log(test);
+    // console.log(test);
     setCodes(test);
   };
 
   const handleSearchTyping = async (data) => {
     setSearchText(data);
     if (data == "") {
-      console.log("c'est vide");
+      // console.log("c'est vide");
       let codes = await getCodes();
-      console.log(codes);
+      // console.log(codes);
       return setCodes(codes);
     }
-    console.log(data);
+    // console.log(data);
     let test = [];
     const q = query(collection(db, "QrCode"), where("emplacement", "==", data));
     const querySnapshot = await getDocs(q);
@@ -107,7 +109,7 @@ const DonneesScreen = ({ navigation }) => {
     querySnapshot.forEach((doc) => {
       test.push({ id: doc.id, data: doc.data() });
     });
-    console.log(test);
+    // console.log(test);
     setCodes(test);
   };
 
@@ -120,6 +122,31 @@ const DonneesScreen = ({ navigation }) => {
         color="rgba(20, 32, 37, 1)"
       />
     );
+  };
+
+  const handleOnlyPrintedQr = async () => {
+    if (onlyPrinted) {
+      getPrintedOrNotQr(!onlyPrinted);
+      setOnlyPrinted(false);
+    } else {
+      getPrintedOrNotQr(!onlyPrinted);
+      setOnlyPrinted(true);
+    }
+  };
+
+  const getPrintedOrNotQr = async (isPrinted) => {
+    let test = [];
+    const q = query(
+      collection(db, "QrCode"),
+      where("isPrinted", "==", isPrinted)
+    );
+    const querySnapshot = await getDocs(q);
+
+    querySnapshot.forEach((doc) => {
+      test.push({ id: doc.id, data: doc.data() });
+    });
+    // console.log(test);
+    setCodes(test);
   };
 
   return (
@@ -148,14 +175,53 @@ const DonneesScreen = ({ navigation }) => {
       >
         <View style={{ flex: 5 }}>
           <TextInput
-            placeholder="Recherche par emplacement Ex: Eee"
+            placeholder="Ex: Eee"
             onChangeText={(e) => handleSearchTyping(e)}
             clearButtonMode="always"
           />
         </View>
+
+        {onlyPrinted == true ? (
+          <View
+            style={{
+              borderTopLeftRadius: 20,
+              borderBottomLeftRadius: 20,
+              alignContent: "center",
+              backgroundColor: "orange",
+              paddingHorizontal: 20,
+              paddingTop: 4,
+              height: "115%",
+              alignItems: "center",
+              // justifyContent: "center",
+            }}
+          >
+            <TouchableOpacity onPress={handleOnlyPrintedQr}>
+              <Feather name="printer" size={30} color="white" />
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View
+            style={{
+              borderTopLeftRadius: 20,
+              borderBottomLeftRadius: 20,
+              alignContent: "center",
+              backgroundColor: "orange",
+              paddingHorizontal: 20,
+              paddingTop: 4,
+              height: "100%",
+              alignItems: "center",
+              // justifyContent: "center",
+            }}
+          >
+            <TouchableOpacity onPress={handleOnlyPrintedQr}>
+              <Feather name="printer" size={30} color="white" />
+            </TouchableOpacity>
+          </View>
+        )}
+
         <View
           style={{
-            backgroundColor: "lightgrey",
+            backgroundColor: "#6825B6",
             flex: 1,
             alignItems: "center",
             borderTopRightRadius: 20,
@@ -167,13 +233,21 @@ const DonneesScreen = ({ navigation }) => {
             <Entypo
               name="magnifying-glass"
               size={30}
-              color="#6825B6"
+              color="white"
               // style={{ padding: 10, backgroundColor: "white" }}
             />
           </TouchableOpacity>
         </View>
       </View>
       <View style={{ marginLeft: 20, marginBottom: 20 }}>
+        <Text style={{ color: "white" }}>
+          *Rechercher uniquement les QRcodes deja imprimés à l'aide du bouton
+          d'impression.
+        </Text>
+        <Text style={{ color: "white" }}>
+          *Désactiver le bouton d'impression lancera une recherche ne concernant
+          que les QRCodes non imprimés.
+        </Text>
         <Text style={{ color: "white" }}>
           *Swiper vers le bas pour réinitialiser la recherche.
         </Text>
@@ -188,7 +262,7 @@ const DonneesScreen = ({ navigation }) => {
           ? Object.keys(codes).map((key, index) => {
               return (
                 <View key={index} style={styles.eachCard}>
-                  <View
+                  {/* <View
                     style={{
                       padding: 10,
                       backgroundColor: "rgba(25, 42, 50, 1)",
@@ -196,7 +270,7 @@ const DonneesScreen = ({ navigation }) => {
                     }}
                   >
                     <DisplayQrCode formData={codes[key]} />
-                  </View>
+                  </View> */}
                   {/* {
                     <QRCode
                       value={JSON.stringify(codes[key])}
@@ -212,16 +286,13 @@ const DonneesScreen = ({ navigation }) => {
                   <View style={styles.actionsContainer}>
                     <View
                       style={{
-                        // borderWidth: 1,
-                        // borderColor: "orange",
-                        borderBottomLeftRadius: 20,
-                        borderTopLeftRadius: 20,
-                        backgroundColor: "orange",
+                        borderRadius: 20,
+                        backgroundColor: "white",
                       }}
                     >
                       <Button
                         title="Voir Qr Code"
-                        color="white"
+                        color="orange"
                         onPress={() => {
                           navigation.navigate("EachCode", {
                             qrId: codes[key]["id"],
@@ -230,19 +301,18 @@ const DonneesScreen = ({ navigation }) => {
                       />
                     </View>
                     {isAdmin == true ? (
-                      <View style={{ flexDirection: "row" }}>
+                      <View>
                         <View
                           style={{
-                            // borderWidth: 2,
-                            // borderColor: "black",
-                            // padding: 10,
+                            borderRadius: 20,
                             margin: 2,
-                            backgroundColor: "#6825B6",
+                            backgroundColor: "white",
+                            marginTop: 10,
                           }}
                         >
                           <Button
                             title="Modifier le Qr Code"
-                            color="white"
+                            color="#6825B6"
                             onPress={() => {
                               navigation.navigate("ModifierQrCodes", {
                                 qrCode: codes[key]["id"],
@@ -252,19 +322,17 @@ const DonneesScreen = ({ navigation }) => {
                         </View>
                         <View
                           style={{
-                            // borderWidth: 1,
-                            // borderColor: "orange",
-                            borderBottomRightRadius: 20,
-                            borderTopRightRadius: 20,
-                            backgroundColor: "#6825B6",
+                            marginTop: 10,
+                            borderRadius: 20,
+                            backgroundColor: "white",
                           }}
                         >
                           <Button
                             title="Voir Reclamations"
-                            color="white"
+                            color="#6825B6"
                             onPress={() => {
                               navigation.navigate("Reclamations", {
-                                qrCode: codes[key]["id"],
+                                qrId: codes[key]["id"],
                               });
                             }}
                           />
@@ -273,10 +341,8 @@ const DonneesScreen = ({ navigation }) => {
                     ) : (
                       <View
                         style={{
-                          // borderWidth: 1,
-                          // borderColor: "#6825B6",
-                          borderTopRightRadius: 20,
-                          borderBottomRightRadius: 20,
+                          borderRadius: 20,
+                          marginTop: 10,
                           backgroundColor: "#6825B6",
                         }}
                       >
@@ -285,7 +351,7 @@ const DonneesScreen = ({ navigation }) => {
                           color="white"
                           onPress={() => {
                             navigation.navigate("Reclamations", {
-                              qrCode: codes[key]["id"],
+                              qrId: codes[key]["id"],
                             });
                           }}
                         />
@@ -341,10 +407,8 @@ const styles = StyleSheet.create({
   },
   actionsContainer: {
     marginTop: 10,
-    width: "80%",
-    // backgroundColor: "red",
+    // width: "30%",
     padding: 20,
-    flexDirection: "row",
     justifyContent: "center",
   },
   button: {},
